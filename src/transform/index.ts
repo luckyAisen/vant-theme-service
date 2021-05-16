@@ -9,7 +9,12 @@ import urllib from 'urllib'
 import compressing from 'compressing'
 import { Version } from '../interface'
 import config from '../config'
-import { concatPath, cleanTargetDirectory, copyFile } from '../utils'
+import {
+  concatPath,
+  cleanTargetDirectory,
+  copyFile,
+  reWriteFile,
+} from '../utils'
 
 export default class Transform {
   // 版本号
@@ -29,9 +34,9 @@ export default class Transform {
     this.vantLibDir = concatPath(this.vantDir, '/package/lib')
     this.styleDir = concatPath(config.dirPath.styleDir, version)
     this.targetFile = config.targetFile
-    console.log('vantDir:', this.vantDir)
-    console.log('vantLibDir:', this.vantLibDir)
-    console.log('styleDir:', this.styleDir)
+    // console.log('vantDir:', this.vantDir)
+    // console.log('vantLibDir:', this.vantLibDir)
+    // console.log('styleDir:', this.styleDir)
     this.handle()
   }
 
@@ -89,8 +94,10 @@ export default class Transform {
   async handleTransform(): Promise<void> {
     // 复制基本的文件
     await this.handleCopyBaseFile()
+    // 替换 index.less 路径替换
+    await this.handleChangeIndexLessPrefix()
     // 处理组件
-    await this.handleComponent()
+    this.handleComponent()
   }
 
   /**
@@ -109,20 +116,67 @@ export default class Transform {
   }
 
   /**
+   * 把转换后的 index.less 中的所有的 ./ 替换成绝对路径
+   */
+  async handleChangeIndexLessPrefix(): Promise<void> {
+    // /**
+    //  * 1、读取文件内容
+    //  * 2、把 ./ 替换成 config.cwd/styles/3.x/
+    //  * 3、覆盖文件内容
+    //  */
+    // // 转换后的 index.less 路径
+    // const indexLessDir = concatPath(this.styleDir, '/index.less')
+    // // 读取文件内容
+    // const input = fs.readFileSync(indexLessDir, 'utf8')
+    // // 把 ./ 替换成 config.cwd/styles/3.x/
+    // const output = input.replace(/\.\//g, `${this.styleDir}/`)
+    // // 写入文件
+    // fs.writeFileSync(indexLessDir, output, 'utf8')
+
+    reWriteFile(this.styleDir, '/index.less', /\.\//g, `${this.styleDir}/`)
+  }
+
+  /**
+   * 把转换后的 icon 中的字体路径替换为绝对路径
+   */
+  async handleChangeIconLessPrefix(): Promise<void> {
+    // /**
+    //  * 1、读取文件内容
+    //  * 2、把 ./ 替换成 config.cwd/styles/3.x/
+    //  * 3、覆盖文件内容
+    //  */
+    // // 转换后的 index.less 路径
+    // const iconLessDir = concatPath(this.styleDir, '/icon/index.less')
+    // // 读取文件内容
+    // const input = fs.readFileSync(iconLessDir, 'utf8')
+    // // 把 ~ 替换成 config.cwd/styles/3.x/
+    // const output = input.replace(/~/g, `${config.cwd}/node_modules/`)
+    // // 写入文件
+    // fs.writeFileSync(iconLessDir, output, 'utf8')
+
+    reWriteFile(
+      this.styleDir,
+      '/icon/index.less',
+      /~/g,
+      `${config.cwd}/node_modules/`
+    )
+  }
+
+  /**
    * 复制组件目录
    */
-  async handleComponent(): Promise<void> {
+  handleComponent(): void {
     const fileList = fs.readdirSync(this.vantLibDir)
-    fileList.forEach(async fileName => {
+    fileList.forEach(async dirName => {
       // 当前文件夹路径
-      const currentPath = concatPath(this.vantLibDir, fileName)
+      const currentPath = concatPath(this.vantLibDir, dirName)
       // 如果当前是文件夹
       if (
         fs.statSync(currentPath).isDirectory() &&
-        !config.exclude.includes(fileName)
+        !config.exclude.includes(dirName)
       ) {
         // 组件目录地址
-        const componentPath = concatPath(this.styleDir, fileName)
+        const componentPath = concatPath(this.styleDir, dirName)
         // 创建组件目录
         await fs.ensureDir(componentPath)
         await this.targetFile.forEach(async target => {
@@ -132,6 +186,10 @@ export default class Transform {
           if (await fs.pathExists(targetPath)) {
             const targetIndexPath = concatPath(componentPath, target)
             await copyFile(targetPath, targetIndexPath)
+            if (dirName === 'icon') {
+              // 替换 icon 中的字体路径问题
+              this.handleChangeIconLessPrefix()
+            }
           }
         })
       }
