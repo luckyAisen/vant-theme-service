@@ -1,4 +1,13 @@
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+.husky
+
 node_modules
 build
-bin
-src/components
+vant
+styles
