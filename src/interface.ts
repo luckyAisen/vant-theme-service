@@ -10,6 +10,7 @@ export interface DirPath {
 }
 
 export interface Config {
+  port: number
   cwd: string
   version: Version
   dirPath: DirPath

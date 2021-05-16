@@ -13,6 +13,7 @@ const dirPath: DirPath = {
 }
 
 const config: Config = {
+  port: 5000,
   cwd: CWD,
   version,
   dirPath,
