@@ -77,3 +77,22 @@ export async function cleanTargetDirectory(
 export function copyFile(path: string, dist: string): Promise<void> {
   return fs.copy(path, dist)
 }
+
+/**
+ * 重写文件内容
+ * @param pathPrefix 文件前缀
+ * @param path 相对路径
+ * @param reg 正则表达式
+ * @param context 替换内容
+ */
+export async function reWriteFile(
+  pathPrefix: string,
+  path: string,
+  reg: RegExp,
+  context: string
+): Promise<void> {
+  const dir = concatPath(pathPrefix, path)
+  const input = fs.readFileSync(dir, 'utf8')
+  const output = input.replace(reg, context)
+  fs.writeFileSync(dir, output, 'utf8')
+}
