@@ -51,7 +51,7 @@ function service() {
   log()
   app.post('/compiler', async function (req, res) {
     try {
-      const input = fs.readFileSync(`./src/components/index.less`, 'utf8')
+      const input = fs.readFileSync(`./src/styles/3.x/index.less`, 'utf8')
       let str = ''
       for (const [key] of Object.entries(req.body)) {
         str += `@${key}:${req.body[key]};\n`
