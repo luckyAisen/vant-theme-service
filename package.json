@@ -1,27 +1,32 @@
 {
   "name": "vant-theme-service",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "prepare": "husky install",
-    "lint": "eslint api --fix --ext .ts,.tsx ",
-    "serve": "vercel dev --debug",
-    "deploy": "vercel"
+  "description": "vant-theme service",
+  "license": "MIT",
+  "author": {
+    "name": "aisen60",
+    "email": "caixusheng60@gmail.com"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Aisen60/vant-theme-service.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/Aisen60/vant-theme-service/issues"
   },
   "homepage": "https://github.com/Aisen60/vant-theme-service#readme",
-  "engines": {
-    "node": ">=12"
+  "keywords": [
+    "vue",
+    "vue3",
+    "vant",
+    "theme",
+    "vant-theme"
+  ],
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "eslint api --fix --ext .ts,.tsx ",
+    "serve": "vercel dev --debug",
+    "deploy": "vercel"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
@@ -41,5 +46,8 @@
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "engines": {
+    "node": ">=12"
   }
 }
