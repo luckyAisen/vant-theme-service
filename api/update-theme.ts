@@ -29,8 +29,6 @@ function getUserVar(defineVar: DefineVar): string {
 
 module.exports = async (req: VercelRequest, res: VercelResponse) => {
   const { global = {}, local = {} } = req.body || {}
-  console.log('global:', global)
-  console.log('local:', local)
   const mainLess = await getMainLessContent()
   const defineLess = appendUserDefineContent([global, local])
   const beforeCompileCss = mainLess + defineLess

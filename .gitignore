@@ -1,6 +1,5 @@
 .vercel
 /node_modules
-/static/vant/package
 
 # Logs
 logs
