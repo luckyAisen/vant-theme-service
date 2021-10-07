@@ -4,5 +4,10 @@
       "source": "/:match*",
       "destination": "/api/:match*"
     }
-  ]
+  ],
+  "functions": {
+    "api/update-theme.ts": {
+      "includeFiles": "static/**"
+    }
+  }
 }
