@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer')
 const urllib = require('urllib')
 const compressing = require('compressing')
 const VANT_URL = `https://www.jsdelivr.com/package/npm/vant`
-const LOCAL_SOURCE = 'static/vant'
+const LOCAL_SOURCE = './static/vant'
 const { logWithSpinner, successSpinner, failSpinner } = require('./spinner')
 
 /**
