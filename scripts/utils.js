@@ -4,7 +4,7 @@ const puppeteer = require('puppeteer')
 const urllib = require('urllib')
 const compressing = require('compressing')
 const VANT_URL = `https://www.jsdelivr.com/package/npm/vant`
-const LOCAL_SOURCE = './static/vant'
+const LOCAL_SOURCE = 'static/vant'
 const { logWithSpinner, successSpinner, failSpinner } = require('./spinner')
 
 /**
@@ -54,6 +54,32 @@ async function updateVantSouce() {
   }
 }
 
+/**
+ * 修改 icon 引入路劲
+ */
+async function updateVantIconPath() {
+  try {
+    logWithSpinner('update vant icon path')
+
+    const src = 'node_modules/@vant/icons/src'
+    const destPrefix = `${LOCAL_SOURCE}/package/lib/icon/`
+    const newFileName = 'vant-icons'
+    const dest = `${destPrefix}${newFileName}`
+    await fs.copy(src, dest)
+    const targetFile = `${destPrefix}/index.less`
+    const lessContent = fs.readFileSync(targetFile, 'UTF-8')
+    const newLessContent = lessContent.replace(
+      new RegExp('~@vant/icons/src/', 'g'),
+      './vant-icons/'
+    )
+    await fs.writeFile(targetFile, newLessContent)
+    successSpinner('update success')
+  } catch (err) {
+    successSpinner('update failed')
+    throw new Error(err)
+  }
+}
+
 function runServe() {
   spawn('npx', ['vercel dev --debug'], { stdio: 'inherit', shell: true })
 }
@@ -71,6 +97,7 @@ module.exports = {
   LOCAL_SOURCE,
   pathExists,
   updateVantSouce,
+  updateVantIconPath,
   runServe,
   runBuild,
   runClean
