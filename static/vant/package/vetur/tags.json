@@ -57,6 +57,31 @@
       "default-tag-text"
     ]
   },
+  "van-badge": {
+    "attributes": [
+      "content",
+      "color",
+      "dot",
+      "max"
+    ]
+  },
+  "van-area": {
+    "attributes": [
+      "value",
+      "title",
+      "confirm-button-text",
+      "cancel-button-text",
+      "area-list",
+      "columns-placeholder",
+      "loading",
+      "readonly",
+      "item-height",
+      "columns-num",
+      "visible-item-count",
+      "swipe-duration",
+      "is-oversea-code"
+    ]
+  },
   "van-button": {
     "attributes": [
       "type",
@@ -81,14 +106,6 @@
       "url",
       "to",
       "replace"
-    ]
-  },
-  "van-badge": {
-    "attributes": [
-      "content",
-      "color",
-      "dot",
-      "max"
     ]
   },
   "van-calendar": {
@@ -135,23 +152,6 @@
     "attributes": [
       "max-range",
       "range-prompt"
-    ]
-  },
-  "van-area": {
-    "attributes": [
-      "value",
-      "title",
-      "confirm-button-text",
-      "cancel-button-text",
-      "area-list",
-      "columns-placeholder",
-      "loading",
-      "readonly",
-      "item-height",
-      "columns-num",
-      "visible-item-count",
-      "swipe-duration",
-      "is-oversea-code"
     ]
   },
   "van-card": {

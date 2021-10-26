@@ -19820,6 +19820,16 @@ var SkuMessages_createNamespace = Object(create["a" /* createNamespace */])('sku
         return value;
       };
     },
+    getExtraDesc: function getExtraDesc(message) {
+      var h = this.$createElement;
+      var extraDesc = message.extraDesc;
+
+      if (extraDesc) {
+        return h("div", {
+          "class": SkuMessages_bem('extra-message')
+        }, [extraDesc]);
+      }
+    },
     genMessage: function genMessage(message, index) {
       var _this2 = this;
 
@@ -19872,7 +19882,9 @@ var SkuMessages_createNamespace = Object(create["a" /* createNamespace */])('sku
         });
       }
 
-      return h(es_field, {
+      return h("div", {
+        "class": SkuMessages_bem('cell-block')
+      }, [h(es_field, {
         "attrs": {
           "maxlength": "200",
           "center": !message.multiple,
@@ -19880,7 +19892,8 @@ var SkuMessages_createNamespace = Object(create["a" /* createNamespace */])('sku
           "required": String(message.required) === '1',
           "placeholder": this.getPlaceholder(message),
           "type": this.getType(message),
-          "formatter": this.getFormatter(message)
+          "formatter": this.getFormatter(message),
+          "border": false
         },
         "key": this.goodsId + "-" + index,
         "model": {
@@ -19889,7 +19902,7 @@ var SkuMessages_createNamespace = Object(create["a" /* createNamespace */])('sku
             _this2.$set(_this2.messageValues[index], "value", $$v);
           }
         }
-      });
+      }), this.getExtraDesc(message)]);
     }
   },
   render: function render() {
@@ -22035,7 +22048,7 @@ TreeSelect.props = {
 
 
 
-var version = '2.12.29';
+var version = '2.12.30';
 
 function install(Vue) {
   var components = [action_sheet, address_edit, address_list, es_area, badge, es_button, calendar, card, cascader, cell, cell_group, es_checkbox, checkbox_group, circle, col, collapse, collapse_item, contact_card, contact_edit, contact_list, count_down, es_coupon, coupon_cell, coupon_list, datetime_picker, dialog, divider, dropdown_item, dropdown_menu, empty, es_field, es_form, goods_action, goods_action_button, goods_action_icon, grid, grid_item, es_icon, es_image, image_preview, index_anchor, index_bar, es_info, es_list, es_loading, locale["a" /* default */], nav_bar, notice_bar, notify, number_keyboard, es_overlay, pagination, panel, password_input, picker, popover, popup, es_progress, pull_refresh, es_radio, radio_group, es_rate, row, search, share_sheet, sidebar, sidebar_item, skeleton, es_sku, slider, es_step, stepper, steps, es_sticky, submit_bar, swipe, swipe_cell, swipe_item, es_switch, switch_cell, tab, tabbar, tabbar_item, tabs, es_tag, es_toast, tree_select, uploader];

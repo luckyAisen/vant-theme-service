@@ -139,6 +139,16 @@ var _default2 = createComponent({
         return value;
       };
     },
+    getExtraDesc: function getExtraDesc(message) {
+      var h = this.$createElement;
+      var extraDesc = message.extraDesc;
+
+      if (extraDesc) {
+        return h("div", {
+          "class": bem('extra-message')
+        }, [extraDesc]);
+      }
+    },
     genMessage: function genMessage(message, index) {
       var _this2 = this;
 
@@ -191,7 +201,9 @@ var _default2 = createComponent({
         });
       }
 
-      return h(_field.default, {
+      return h("div", {
+        "class": bem('cell-block')
+      }, [h(_field.default, {
         "attrs": {
           "maxlength": "200",
           "center": !message.multiple,
@@ -199,7 +211,8 @@ var _default2 = createComponent({
           "required": String(message.required) === '1',
           "placeholder": this.getPlaceholder(message),
           "type": this.getType(message),
-          "formatter": this.getFormatter(message)
+          "formatter": this.getFormatter(message),
+          "border": false
         },
         "key": this.goodsId + "-" + index,
         "model": {
@@ -208,7 +221,7 @@ var _default2 = createComponent({
             _this2.$set(_this2.messageValues[index], "value", $$v);
           }
         }
-      });
+      }), this.getExtraDesc(message)]);
     }
   },
   render: function render() {

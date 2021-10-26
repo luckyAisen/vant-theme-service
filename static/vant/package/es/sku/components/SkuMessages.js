@@ -126,6 +126,16 @@ export default createComponent({
         return value;
       };
     },
+    getExtraDesc: function getExtraDesc(message) {
+      var h = this.$createElement;
+      var extraDesc = message.extraDesc;
+
+      if (extraDesc) {
+        return h("div", {
+          "class": bem('extra-message')
+        }, [extraDesc]);
+      }
+    },
     genMessage: function genMessage(message, index) {
       var _this2 = this;
 
@@ -178,7 +188,9 @@ export default createComponent({
         });
       }
 
-      return h(Field, {
+      return h("div", {
+        "class": bem('cell-block')
+      }, [h(Field, {
         "attrs": {
           "maxlength": "200",
           "center": !message.multiple,
@@ -186,7 +198,8 @@ export default createComponent({
           "required": String(message.required) === '1',
           "placeholder": this.getPlaceholder(message),
           "type": this.getType(message),
-          "formatter": this.getFormatter(message)
+          "formatter": this.getFormatter(message),
+          "border": false
         },
         "key": this.goodsId + "-" + index,
         "model": {
@@ -195,7 +208,7 @@ export default createComponent({
             _this2.$set(_this2.messageValues[index], "value", $$v);
           }
         }
-      });
+      }), this.getExtraDesc(message)]);
     }
   },
   render: function render() {

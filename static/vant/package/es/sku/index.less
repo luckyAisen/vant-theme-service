@@ -1,5 +1,6 @@
 @import '../style/var';
 @import '../style/mixins/clearfix';
+@import '../style/mixins/hairline';
 
 .van-sku {
   &-container {
@@ -341,6 +342,26 @@
         font-size: @cell-label-font-size;
         line-height: @cell-label-line-height;
       }
+    }
+
+    &__cell-block {
+      position: relative;
+
+      &::after {
+        .hairline-bottom(@cell-border-color, @padding-md, @padding-md);
+      }
+
+      &:last-child::after {
+        display: none;
+      }
+    }
+
+    &__extra-message {
+      margin-top: -2px;
+      padding: 0 16px 12px;
+      color: @cell-label-color;
+      font-size: @cell-label-font-size;
+      line-height: @cell-label-line-height;
     }
   }
 

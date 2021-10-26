@@ -183,6 +183,74 @@
     "type": "string",
     "description": "默认地址标签文字, 默认值: -"
   },
+  "van-badge/content": {
+    "type": "number | string",
+    "description": "徽标内容, 默认值: -"
+  },
+  "van-badge/color": {
+    "type": "string",
+    "description": "徽标背景颜色, 默认值: `#ee0a24`"
+  },
+  "van-badge/dot": {
+    "type": "boolean",
+    "description": "是否展示为小红点, 默认值: `false`"
+  },
+  "van-badge/max": {
+    "type": "number | string",
+    "description": "最大值，超过最大值会显示 `{max}+`，仅当 content 为数字时有效, 默认值: -"
+  },
+  "van-area/value": {
+    "type": "string",
+    "description": "当前选中的省市区`code`, 默认值: -"
+  },
+  "van-area/title": {
+    "type": "string",
+    "description": "顶部栏标题, 默认值: -"
+  },
+  "van-area/confirm-button-text": {
+    "type": "string",
+    "description": "确认按钮文字, 默认值: `确认`"
+  },
+  "van-area/cancel-button-text": {
+    "type": "string",
+    "description": "取消按钮文字, 默认值: `取消`"
+  },
+  "van-area/area-list": {
+    "type": "object",
+    "description": "省市区数据，格式见下方, 默认值: -"
+  },
+  "van-area/columns-placeholder": {
+    "type": "string[]",
+    "description": "列占位提示文字, 默认值: `[]`"
+  },
+  "van-area/loading": {
+    "type": "boolean",
+    "description": "是否显示加载状态, 默认值: `false`"
+  },
+  "van-area/readonly": {
+    "type": "boolean",
+    "description": "是否为只读状态，只读状态下无法切换选项, 默认值: `false`"
+  },
+  "van-area/item-height": {
+    "type": "number | string",
+    "description": "选项高度，支持 `px` `vw` `vh` `rem` 单位，默认 `px`, 默认值: `44`"
+  },
+  "van-area/columns-num": {
+    "type": "number | string",
+    "description": "显示列数，3-省市区，2-省市，1-省, 默认值: `3`"
+  },
+  "van-area/visible-item-count": {
+    "type": "number | string",
+    "description": "可见的选项个数, 默认值: `6`"
+  },
+  "van-area/swipe-duration": {
+    "type": "number | string",
+    "description": "快速滑动时惯性滚动的时长，单位`ms`, 默认值: `1000`"
+  },
+  "van-area/is-oversea-code": {
+    "type": "() => boolean",
+    "description": "根据`code`校验海外地址，海外地址会划分至单独的分类, 默认值: -"
+  },
   "van-button/type": {
     "type": "string",
     "description": "类型，可选值为 `primary` `info` `warning` `danger`, 默认值: `default`"
@@ -270,22 +338,6 @@
   "van-button/replace": {
     "type": "boolean",
     "description": "是否在跳转时替换当前页面历史, 默认值: `false`"
-  },
-  "van-badge/content": {
-    "type": "number | string",
-    "description": "徽标内容, 默认值: -"
-  },
-  "van-badge/color": {
-    "type": "string",
-    "description": "徽标背景颜色, 默认值: `#ee0a24`"
-  },
-  "van-badge/dot": {
-    "type": "boolean",
-    "description": "是否展示为小红点, 默认值: `false`"
-  },
-  "van-badge/max": {
-    "type": "number | string",
-    "description": "最大值，超过最大值会显示 `{max}+`，仅当 content 为数字时有效, 默认值: -"
   },
   "van-calendar/type": {
     "type": "string",
@@ -406,58 +458,6 @@
   "van-multiple/range-prompt": {
     "type": "string",
     "description": "选择超过最多可选天数时的提示文案, 默认值: `选择天数不能超过 xx 天`"
-  },
-  "van-area/value": {
-    "type": "string",
-    "description": "当前选中的省市区`code`, 默认值: -"
-  },
-  "van-area/title": {
-    "type": "string",
-    "description": "顶部栏标题, 默认值: -"
-  },
-  "van-area/confirm-button-text": {
-    "type": "string",
-    "description": "确认按钮文字, 默认值: `确认`"
-  },
-  "van-area/cancel-button-text": {
-    "type": "string",
-    "description": "取消按钮文字, 默认值: `取消`"
-  },
-  "van-area/area-list": {
-    "type": "object",
-    "description": "省市区数据，格式见下方, 默认值: -"
-  },
-  "van-area/columns-placeholder": {
-    "type": "string[]",
-    "description": "列占位提示文字, 默认值: `[]`"
-  },
-  "van-area/loading": {
-    "type": "boolean",
-    "description": "是否显示加载状态, 默认值: `false`"
-  },
-  "van-area/readonly": {
-    "type": "boolean",
-    "description": "是否为只读状态，只读状态下无法切换选项, 默认值: `false`"
-  },
-  "van-area/item-height": {
-    "type": "number | string",
-    "description": "选项高度，支持 `px` `vw` `vh` `rem` 单位，默认 `px`, 默认值: `44`"
-  },
-  "van-area/columns-num": {
-    "type": "number | string",
-    "description": "显示列数，3-省市区，2-省市，1-省, 默认值: `3`"
-  },
-  "van-area/visible-item-count": {
-    "type": "number | string",
-    "description": "可见的选项个数, 默认值: `6`"
-  },
-  "van-area/swipe-duration": {
-    "type": "number | string",
-    "description": "快速滑动时惯性滚动的时长，单位`ms`, 默认值: `1000`"
-  },
-  "van-area/is-oversea-code": {
-    "type": "() => boolean",
-    "description": "根据`code`校验海外地址，海外地址会划分至单独的分类, 默认值: -"
   },
   "van-card/thumb": {
     "type": "string",
