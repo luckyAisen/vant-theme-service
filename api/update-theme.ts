@@ -37,6 +37,6 @@ module.exports = async (req: VercelRequest, res: VercelResponse) => {
     res.send(css)
   } catch (err) {
     console.log(err)
-    res.send('error').status(500)
+    res.send(err).status(500)
   }
 }
