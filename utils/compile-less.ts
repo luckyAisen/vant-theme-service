@@ -1,4 +1,5 @@
 import { render, FileManager } from 'less'
+import { readFileSync } from 'fs-extra'
 
 // less plugin to resolve tilde
 class TildeResolver extends FileManager {
@@ -14,8 +15,9 @@ const TildeResolverPlugin = {
   }
 }
 
-export async function compileLess(source: string, filePath: string) {
-  const { css } = await render(source, {
+export async function compileLess(filePath: string, customCss: string) {
+  const source = readFileSync(filePath, 'utf-8')
+  const { css } = await render(source + customCss, {
     filename: filePath,
     plugins: [TildeResolverPlugin]
   })
