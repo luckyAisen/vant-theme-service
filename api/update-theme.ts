@@ -1,26 +1,13 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
-import { MAIN_LESS, readFileReturnString } from '../utils/index'
-import { compileLess } from '../utils/compile-less'
+import { MAIN_LESS } from '../utils/index'
+import { compileStyle } from '../utils/compile-style'
 
 type DefineVar = {
   [propName: string]: string
 }
 
-async function getMainLessContent(): Promise<string> {
-  const lessContent = await readFileReturnString(MAIN_LESS)
-  return `${lessContent}\n\n// user define content start\n\n`
-}
-
-function appendUserDefineContent(arr: DefineVar[]): string {
-  let userDefineContent = ''
-  arr.forEach(item => {
-    userDefineContent += getUserVar(item)
-  })
-  return userDefineContent
-}
-
 function getUserVar(defineVar: DefineVar): string {
-  let text = ''
+  let text = `\n\n// user define content start\n\n`
   for (const key in defineVar) {
     text += `${key}: ${defineVar[key]}; `
   }
@@ -28,12 +15,10 @@ function getUserVar(defineVar: DefineVar): string {
 }
 
 module.exports = async (req: VercelRequest, res: VercelResponse) => {
-  const { global = {}, local = {} } = req.body || {}
-  const mainLess = await getMainLessContent()
-  const defineLess = appendUserDefineContent([global, local])
-  const beforeCompileCss = mainLess + defineLess
+  const cssParams = req.body || {}
+  const customCss = getUserVar(cssParams)
   try {
-    const css = await compileLess(beforeCompileCss, MAIN_LESS)
+    const css = await compileStyle(MAIN_LESS, customCss)
     res.send(css)
   } catch (err) {
     console.log(err)
