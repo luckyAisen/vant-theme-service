@@ -1,4 +1,4 @@
-const { updateVantSouce, updateVantIconPath, runBuild } = require('./utils')
+import { updateVantSouce, updateVantIconPath, runBuild } from './utils.js'
 
 async function build() {
   try {

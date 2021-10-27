@@ -1,19 +1,20 @@
-const ora = require('ora')
+import ora from 'ora'
+
 const spinner = ora()
 
-exports.logWithSpinner = msg => {
+export function logWithSpinner(msg) {
   spinner.text = msg
   spinner.start()
 }
 
-exports.successSpinner = (text) => {
+export function successSpinner(text) {
   spinner.succeed(text)
 }
 
-exports.failSpinner = (text) => {
+export function failSpinner(text) {
   spinner.fail(text)
 }
 
-exports.stopSpinner = (text) => {
+export function stopSpinner(text) {
   spinner.stop(text)
 }

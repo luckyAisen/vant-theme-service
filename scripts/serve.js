@@ -1,14 +1,14 @@
-const {
+import {
   LOCAL_SOURCE,
-  pathExists,
+  isExists,
   updateVantSouce,
   updateVantIconPath,
   runServe
-} = require('./utils')
+} from './utils.js'
 
 async function serve() {
   try {
-    if (!(await pathExists(LOCAL_SOURCE))) {
+    if (!(await isExists(LOCAL_SOURCE))) {
       await updateVantSouce()
       await updateVantIconPath()
     }

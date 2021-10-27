@@ -1,20 +1,22 @@
-const { spawn } = require('child_process')
-const fs = require('fs-extra')
-const puppeteer = require('puppeteer')
-const urllib = require('urllib')
-const compressing = require('compressing')
-const VANT_URL = `https://www.jsdelivr.com/package/npm/vant`
-const LOCAL_SOURCE = 'static/vant'
-const { logWithSpinner, successSpinner, failSpinner } = require('./spinner')
+import { spawn } from 'child_process'
+import { readFileSync, writeFileSync } from 'fs'
+import { pathExists, copy, remove } from 'fs-extra'
+import puppeteer from 'puppeteer'
+import urllib from 'urllib'
+import compressing from 'compressing'
+import { logWithSpinner, successSpinner, failSpinner } from './spinner.js'
+
+export const VANT_URL = `https://www.jsdelivr.com/package/npm/vant`
+export const LOCAL_SOURCE = 'static/vant'
 
 /**
  * 判断文件是否存在
  * @param {String} path 文件路径
  * @returns {Boolean}
  */
-async function pathExists(path) {
+export async function isExists(path) {
   logWithSpinner(`check ${path} is exists?`)
-  const exists = await fs.pathExists(`${path}`)
+  const exists = await pathExists(`${path}`)
   if (exists) {
     successSpinner(`${path} is exists`)
   } else {
@@ -26,7 +28,7 @@ async function pathExists(path) {
 /**
  * 下载 vant 编译后的代码
  */
-async function updateVantSouce() {
+export async function updateVantSouce() {
   try {
     logWithSpinner('download vant source')
     const browser = await puppeteer.launch({
@@ -57,7 +59,7 @@ async function updateVantSouce() {
 /**
  * 修改 icon 引入路劲
  */
-async function updateVantIconPath() {
+export async function updateVantIconPath() {
   try {
     logWithSpinner('update vant icon path')
 
@@ -65,14 +67,14 @@ async function updateVantIconPath() {
     const destPrefix = `${LOCAL_SOURCE}/package/lib/icon/`
     const newFileName = 'vant-icons'
     const dest = `${destPrefix}${newFileName}`
-    await fs.copy(src, dest)
+    await copy(src, dest)
     const targetFile = `${destPrefix}/index.less`
-    const lessContent = fs.readFileSync(targetFile, 'UTF-8')
+    const lessContent = readFileSync(targetFile, 'UTF-8')
     const newLessContent = lessContent.replace(
       new RegExp('~@vant/icons/src/', 'g'),
       './vant-icons/'
     )
-    await fs.writeFile(targetFile, newLessContent)
+    writeFileSync(targetFile, newLessContent)
     successSpinner('update success')
   } catch (err) {
     successSpinner('update failed')
@@ -80,25 +82,14 @@ async function updateVantIconPath() {
   }
 }
 
-function runServe() {
+export function runServe() {
   spawn('npx', ['vercel dev --debug'], { stdio: 'inherit', shell: true })
 }
 
-function runBuild() {
+export function runBuild() {
   spawn('npx', ['vercel --prod'], { stdio: 'inherit', shell: true })
 }
 
-async function runClean() {
-  return fs.remove(LOCAL_SOURCE)
-}
-
-module.exports = {
-  VANT_URL,
-  LOCAL_SOURCE,
-  pathExists,
-  updateVantSouce,
-  updateVantIconPath,
-  runServe,
-  runBuild,
-  runClean
+export async function runClean() {
+  return remove(LOCAL_SOURCE)
 }
