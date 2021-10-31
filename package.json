@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "vant-theme service",
   "license": "MIT",
+  "type": "module",
   "author": {
     "name": "aisen60",
     "email": "caixusheng60@gmail.com"
