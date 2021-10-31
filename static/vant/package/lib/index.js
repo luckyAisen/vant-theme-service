@@ -361,7 +361,7 @@ exports.TreeSelect = _treeSelect.default;
 var _uploader = _interopRequireDefault(require("./uploader"));
 
 exports.Uploader = _uploader.default;
-var version = '2.12.30';
+var version = '2.12.31';
 exports.version = version;
 
 function install(Vue) {

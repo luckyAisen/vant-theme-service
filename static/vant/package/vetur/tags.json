@@ -46,25 +46,6 @@
       "validator"
     ]
   },
-  "van-address-list": {
-    "attributes": [
-      "v-model",
-      "list",
-      "disabled-list",
-      "disabled-text",
-      "switchable",
-      "add-button-text",
-      "default-tag-text"
-    ]
-  },
-  "van-badge": {
-    "attributes": [
-      "content",
-      "color",
-      "dot",
-      "max"
-    ]
-  },
   "van-area": {
     "attributes": [
       "value",
@@ -80,6 +61,14 @@
       "visible-item-count",
       "swipe-duration",
       "is-oversea-code"
+    ]
+  },
+  "van-badge": {
+    "attributes": [
+      "content",
+      "color",
+      "dot",
+      "max"
     ]
   },
   "van-button": {
@@ -106,6 +95,17 @@
       "url",
       "to",
       "replace"
+    ]
+  },
+  "van-address-list": {
+    "attributes": [
+      "v-model",
+      "list",
+      "disabled-list",
+      "disabled-text",
+      "switchable",
+      "add-button-text",
+      "default-tag-text"
     ]
   },
   "van-calendar": {

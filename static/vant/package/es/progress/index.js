@@ -1,10 +1,15 @@
 import { createNamespace, addUnit } from '../utils';
+import { BindEventMixin } from '../mixins/bind-event';
 
 var _createNamespace = createNamespace('progress'),
     createComponent = _createNamespace[0],
     bem = _createNamespace[1];
 
 export default createComponent({
+  mixins: [BindEventMixin(function (bind) {
+    bind(window, 'resize', this.resize, true);
+    bind(window, 'orientationchange', this.resize, true);
+  })],
   props: {
     color: String,
     inactive: Boolean,

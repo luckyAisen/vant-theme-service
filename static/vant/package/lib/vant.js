@@ -3745,7 +3745,9 @@ var field_createNamespace = Object(create["a" /* createNamespace */])('field'),
     },
     onFocus: function onFocus(event) {
       this.focused = true;
-      this.$emit('focus', event); // readonly not work in legacy mobile safari
+      this.$emit('focus', event); // https://github.com/youzan/vant/issues/9715
+
+      this.$nextTick(this.adjustSize); // readonly not work in legacy mobile safari
 
       /* istanbul ignore if */
 
@@ -3760,6 +3762,7 @@ var field_createNamespace = Object(create["a" /* createNamespace */])('field'),
       this.updateValue(this.value, 'onBlur');
       this.$emit('blur', event);
       this.validateWithTrigger('onBlur');
+      this.$nextTick(this.adjustSize);
       resetScroll();
     },
     onClick: function onClick(event) {
@@ -16651,11 +16654,16 @@ var popover_createNamespace = Object(create["a" /* createNamespace */])('popover
 // CONCATENATED MODULE: ./es/progress/index.js
 
 
+
 var progress_createNamespace = Object(create["a" /* createNamespace */])('progress'),
     progress_createComponent = progress_createNamespace[0],
     progress_bem = progress_createNamespace[1];
 
 /* harmony default export */ var es_progress = (progress_createComponent({
+  mixins: [BindEventMixin(function (bind) {
+    bind(window, 'resize', this.resize, true);
+    bind(window, 'orientationchange', this.resize, true);
+  })],
   props: {
     color: String,
     inactive: Boolean,
@@ -22048,7 +22056,7 @@ TreeSelect.props = {
 
 
 
-var version = '2.12.30';
+var version = '2.12.31';
 
 function install(Vue) {
   var components = [action_sheet, address_edit, address_list, es_area, badge, es_button, calendar, card, cascader, cell, cell_group, es_checkbox, checkbox_group, circle, col, collapse, collapse_item, contact_card, contact_edit, contact_list, count_down, es_coupon, coupon_cell, coupon_list, datetime_picker, dialog, divider, dropdown_item, dropdown_menu, empty, es_field, es_form, goods_action, goods_action_button, goods_action_icon, grid, grid_item, es_icon, es_image, image_preview, index_anchor, index_bar, es_info, es_list, es_loading, locale["a" /* default */], nav_bar, notice_bar, notify, number_keyboard, es_overlay, pagination, panel, password_input, picker, popover, popup, es_progress, pull_refresh, es_radio, radio_group, es_rate, row, search, share_sheet, sidebar, sidebar_item, skeleton, es_sku, slider, es_step, stepper, steps, es_sticky, submit_bar, swipe, swipe_cell, swipe_item, es_switch, switch_cell, tab, tabbar, tabbar_item, tabs, es_tag, es_toast, tree_select, uploader];

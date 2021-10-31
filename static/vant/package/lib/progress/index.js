@@ -5,11 +5,17 @@ exports.default = void 0;
 
 var _utils = require("../utils");
 
+var _bindEvent = require("../mixins/bind-event");
+
 var _createNamespace = (0, _utils.createNamespace)('progress'),
     createComponent = _createNamespace[0],
     bem = _createNamespace[1];
 
 var _default = createComponent({
+  mixins: [(0, _bindEvent.BindEventMixin)(function (bind) {
+    bind(window, 'resize', this.resize, true);
+    bind(window, 'orientationchange', this.resize, true);
+  })],
   props: {
     color: String,
     inactive: Boolean,

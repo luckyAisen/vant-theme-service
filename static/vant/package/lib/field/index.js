@@ -348,7 +348,9 @@ var _default = createComponent({
     },
     onFocus: function onFocus(event) {
       this.focused = true;
-      this.$emit('focus', event); // readonly not work in legacy mobile safari
+      this.$emit('focus', event); // https://github.com/youzan/vant/issues/9715
+
+      this.$nextTick(this.adjustSize); // readonly not work in legacy mobile safari
 
       /* istanbul ignore if */
 
@@ -363,6 +365,7 @@ var _default = createComponent({
       this.updateValue(this.value, 'onBlur');
       this.$emit('blur', event);
       this.validateWithTrigger('onBlur');
+      this.$nextTick(this.adjustSize);
       (0, _resetScroll.resetScroll)();
     },
     onClick: function onClick(event) {

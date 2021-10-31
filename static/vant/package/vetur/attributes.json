@@ -155,50 +155,6 @@
     "type": "(key, val) => string",
     "description": "自定义校验函数, 默认值: -"
   },
-  "van-address-list/v-model": {
-    "type": "string",
-    "description": "当前选中地址的 id, 默认值: -"
-  },
-  "van-address-list/list": {
-    "type": "Address[]",
-    "description": "地址列表, 默认值: `[]`"
-  },
-  "van-address-list/disabled-list": {
-    "type": "Address[]",
-    "description": "不可配送地址列表, 默认值: `[]`"
-  },
-  "van-address-list/disabled-text": {
-    "type": "string",
-    "description": "不可配送提示文案, 默认值: -"
-  },
-  "van-address-list/switchable": {
-    "type": "boolean",
-    "description": "是否允许切换地址, 默认值: `true`"
-  },
-  "van-address-list/add-button-text": {
-    "type": "string",
-    "description": "底部按钮文字, 默认值: `新增地址`"
-  },
-  "van-address-list/default-tag-text": {
-    "type": "string",
-    "description": "默认地址标签文字, 默认值: -"
-  },
-  "van-badge/content": {
-    "type": "number | string",
-    "description": "徽标内容, 默认值: -"
-  },
-  "van-badge/color": {
-    "type": "string",
-    "description": "徽标背景颜色, 默认值: `#ee0a24`"
-  },
-  "van-badge/dot": {
-    "type": "boolean",
-    "description": "是否展示为小红点, 默认值: `false`"
-  },
-  "van-badge/max": {
-    "type": "number | string",
-    "description": "最大值，超过最大值会显示 `{max}+`，仅当 content 为数字时有效, 默认值: -"
-  },
   "van-area/value": {
     "type": "string",
     "description": "当前选中的省市区`code`, 默认值: -"
@@ -250,6 +206,22 @@
   "van-area/is-oversea-code": {
     "type": "() => boolean",
     "description": "根据`code`校验海外地址，海外地址会划分至单独的分类, 默认值: -"
+  },
+  "van-badge/content": {
+    "type": "number | string",
+    "description": "徽标内容, 默认值: -"
+  },
+  "van-badge/color": {
+    "type": "string",
+    "description": "徽标背景颜色, 默认值: `#ee0a24`"
+  },
+  "van-badge/dot": {
+    "type": "boolean",
+    "description": "是否展示为小红点, 默认值: `false`"
+  },
+  "van-badge/max": {
+    "type": "number | string",
+    "description": "最大值，超过最大值会显示 `{max}+`，仅当 content 为数字时有效, 默认值: -"
   },
   "van-button/type": {
     "type": "string",
@@ -338,6 +310,34 @@
   "van-button/replace": {
     "type": "boolean",
     "description": "是否在跳转时替换当前页面历史, 默认值: `false`"
+  },
+  "van-address-list/v-model": {
+    "type": "string",
+    "description": "当前选中地址的 id, 默认值: -"
+  },
+  "van-address-list/list": {
+    "type": "Address[]",
+    "description": "地址列表, 默认值: `[]`"
+  },
+  "van-address-list/disabled-list": {
+    "type": "Address[]",
+    "description": "不可配送地址列表, 默认值: `[]`"
+  },
+  "van-address-list/disabled-text": {
+    "type": "string",
+    "description": "不可配送提示文案, 默认值: -"
+  },
+  "van-address-list/switchable": {
+    "type": "boolean",
+    "description": "是否允许切换地址, 默认值: `true`"
+  },
+  "van-address-list/add-button-text": {
+    "type": "string",
+    "description": "底部按钮文字, 默认值: `新增地址`"
+  },
+  "van-address-list/default-tag-text": {
+    "type": "string",
+    "description": "默认地址标签文字, 默认值: -"
   },
   "van-calendar/type": {
     "type": "string",
@@ -713,7 +713,7 @@
   },
   "van-circle/stroke-linecap": {
     "type": "string",
-    "description": "进度条端点的形状，可选值为`sqaure` `butt`, 默认值: `round`"
+    "description": "进度条端点的形状，可选值为`square` `butt`, 默认值: `round`"
   },
   "van-circle/clockwise": {
     "type": "boolean",
