@@ -27,6 +27,7 @@
     "prepare": "husky install",
     "lint": "eslint api --fix --ext .ts,.tsx ",
     "serve": "node scripts/serve.js",
+    "action": "node scripts/action.js",
     "deploy": "node scripts/build.js",
     "clean": "node scripts/clean.js"
   },
