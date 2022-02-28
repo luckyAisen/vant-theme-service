@@ -7,7 +7,7 @@
 		exports["vant"] = factory(require("vue"));
 	else
 		root["vant"] = factory(root["Vue"]);
-})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE__3__) {
+})((typeof self !== 'undefined' ? self : this), function(__WEBPACK_EXTERNAL_MODULE__3__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -790,7 +790,7 @@ __webpack_require__.d(__webpack_exports__, "Overlay", function() { return /* ree
 __webpack_require__.d(__webpack_exports__, "Pagination", function() { return /* reexport */ pagination; });
 __webpack_require__.d(__webpack_exports__, "Panel", function() { return /* reexport */ panel; });
 __webpack_require__.d(__webpack_exports__, "PasswordInput", function() { return /* reexport */ password_input; });
-__webpack_require__.d(__webpack_exports__, "Picker", function() { return /* reexport */ picker; });
+__webpack_require__.d(__webpack_exports__, "Picker", function() { return /* reexport */ es_picker; });
 __webpack_require__.d(__webpack_exports__, "Popover", function() { return /* reexport */ popover; });
 __webpack_require__.d(__webpack_exports__, "Popup", function() { return /* reexport */ popup; });
 __webpack_require__.d(__webpack_exports__, "Progress", function() { return /* reexport */ es_progress; });
@@ -1194,14 +1194,13 @@ function getVisibleTop(el) {
 }
 // CONCATENATED MODULE: ./es/mixins/touch.js
 
-var MIN_DISTANCE = 10;
 
 function getDirection(x, y) {
-  if (x > y && x > MIN_DISTANCE) {
+  if (x > y) {
     return 'horizontal';
   }
 
-  if (y > x && y > MIN_DISTANCE) {
+  if (y > x) {
     return 'vertical';
   }
 
@@ -1221,13 +1220,18 @@ var TouchMixin = {
       this.startY = event.touches[0].clientY;
     },
     touchMove: function touchMove(event) {
-      var touch = event.touches[0]; // Fix: Safari back will set clientX to negative number
+      var touch = event.touches[0]; // safari back will set clientX to negative number
 
       this.deltaX = touch.clientX < 0 ? 0 : touch.clientX - this.startX;
       this.deltaY = touch.clientY - this.startY;
       this.offsetX = Math.abs(this.deltaX);
-      this.offsetY = Math.abs(this.deltaY);
-      this.direction = this.direction || getDirection(this.offsetX, this.offsetY);
+      this.offsetY = Math.abs(this.deltaY); // lock direction when distance is greater than a certain value
+
+      var LOCK_DIRECTION_DISTANCE = 10;
+
+      if (!this.direction || this.offsetX < LOCK_DIRECTION_DISTANCE && this.offsetY < LOCK_DIRECTION_DISTANCE) {
+        this.direction = getDirection(this.offsetX, this.offsetY);
+      }
     },
     resetTouchStatus: function resetTouchStatus() {
       this.direction = '';
@@ -2221,8 +2225,12 @@ function getElementTranslateY(element) {
 
 function isOptionDisabled(option) {
   return Object(utils["f" /* isObject */])(option) && option.disabled;
-}
+} // use standard WheelEvent:
+// https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent
 
+
+var supportMousewheel = utils["b" /* inBrowser */] && 'onwheel' in window;
+var mousewheelTimer = null;
 /* harmony default export */ var PickerColumn = (PickerColumn_createComponent({
   mixins: [TouchMixin],
   props: {
@@ -2258,12 +2266,20 @@ function isOptionDisabled(option) {
   },
   mounted: function mounted() {
     this.bindTouchEvent(this.$el);
+
+    if (supportMousewheel) {
+      event_on(this.$el, 'wheel', this.onMouseWheel, false);
+    }
   },
   destroyed: function destroyed() {
     var children = this.$parent.children;
 
     if (children) {
       children.splice(children.indexOf(this), 1);
+    }
+
+    if (supportMousewheel) {
+      off(this.$el, 'wheel');
     }
   },
   watch: {
@@ -2352,6 +2368,43 @@ function isOptionDisabled(option) {
         _this.moving = false;
       }, 0);
     },
+    onMouseWheel: function onMouseWheel(event) {
+      var _this2 = this;
+
+      if (this.readonly) {
+        return;
+      }
+
+      preventDefault(event, true); // simply combine touchstart and touchmove
+
+      var translateY = getElementTranslateY(this.$refs.wrapper);
+      this.startOffset = Math.min(0, translateY - this.baseOffset);
+      this.momentumOffset = this.startOffset;
+      this.transitionEndTrigger = null; // directly use deltaY, see https://caniuse.com/?search=deltaY
+      // use deltaY to detect direction for not special setting device
+      // https://developer.mozilla.org/en-US/docs/Web/API/Element/wheel_event
+
+      var deltaY = event.deltaY;
+
+      if (this.startOffset === 0 && deltaY < 0) {
+        return;
+      } // get offset
+      // if necessary, can adjust distance value to make scrolling smoother
+
+
+      var distance = -deltaY;
+      this.offset = range(this.startOffset + distance, -(this.count * this.itemHeight), this.itemHeight);
+
+      if (mousewheelTimer) {
+        clearTimeout(mousewheelTimer);
+      }
+
+      mousewheelTimer = setTimeout(function () {
+        _this2.onTouchEnd();
+
+        _this2.touchStartTime = 0;
+      }, MOMENTUM_LIMIT_TIME);
+    },
     onTransitionEnd: function onTransitionEnd() {
       this.stopMomentum();
     },
@@ -2383,17 +2436,17 @@ function isOptionDisabled(option) {
       return option;
     },
     setIndex: function setIndex(index, emitChange) {
-      var _this2 = this;
+      var _this3 = this;
 
       index = this.adjustIndex(index) || 0;
       var offset = -index * this.itemHeight;
 
       var trigger = function trigger() {
-        if (index !== _this2.currentIndex) {
-          _this2.currentIndex = index;
+        if (index !== _this3.currentIndex) {
+          _this3.currentIndex = index;
 
           if (emitChange) {
-            _this2.$emit('change', index);
+            _this3.$emit('change', index);
           }
         }
       }; // trigger the change event after transitionend when moving
@@ -2439,7 +2492,7 @@ function isOptionDisabled(option) {
       }
     },
     genOptions: function genOptions() {
-      var _this3 = this;
+      var _this4 = this;
 
       var h = this.$createElement;
       var optionStyle = {
@@ -2448,7 +2501,7 @@ function isOptionDisabled(option) {
       return this.options.map(function (option, index) {
         var _domProps;
 
-        var text = _this3.getOptionText(option);
+        var text = _this4.getOptionText(option);
 
         var disabled = isOptionDisabled(option);
         var data = {
@@ -2459,19 +2512,19 @@ function isOptionDisabled(option) {
           },
           class: [PickerColumn_bem('item', {
             disabled: disabled,
-            selected: index === _this3.currentIndex
+            selected: index === _this4.currentIndex
           })],
           on: {
             click: function click() {
-              _this3.onClickItem(index);
+              _this4.onClickItem(index);
             }
           }
         };
         var childData = {
           class: 'van-ellipsis',
-          domProps: (_domProps = {}, _domProps[_this3.allowHtml ? 'innerHTML' : 'textContent'] = text, _domProps)
+          domProps: (_domProps = {}, _domProps[_this4.allowHtml ? 'innerHTML' : 'textContent'] = text, _domProps)
         };
-        return h("li", helper_default()([{}, data]), [_this3.slots('option', option) || h("div", helper_default()([{}, childData]))]);
+        return h("li", helper_default()([{}, data]), [_this4.slots('option', option) || h("div", helper_default()([{}, childData]))]);
       });
     }
   },
@@ -2511,7 +2564,7 @@ var picker_createNamespace = Object(create["a" /* createNamespace */])('picker')
     picker_bem = picker_createNamespace[1],
     t = picker_createNamespace[2];
 
-/* harmony default export */ var picker = (picker_createComponent({
+/* harmony default export */ var es_picker = (picker_createComponent({
   props: _extends({}, pickerProps, {
     defaultIndex: {
       type: [Number, String],
@@ -3179,7 +3232,7 @@ function pickSlots(instance, keys) {
       confirm: this.onConfirm
     });
 
-    return h(picker, {
+    return h(es_picker, {
       "ref": "picker",
       "class": area_bem(),
       "attrs": {
@@ -3751,13 +3804,15 @@ var field_createNamespace = Object(create["a" /* createNamespace */])('field'),
 
       /* istanbul ignore if */
 
-      var readonly = this.getProp('readonly');
-
-      if (readonly) {
+      if (this.getProp('readonly')) {
         this.blur();
       }
     },
     onBlur: function onBlur(event) {
+      if (this.getProp('readonly')) {
+        return;
+      }
+
       this.focused = false;
       this.updateValue(this.value, 'onBlur');
       this.$emit('blur', event);
@@ -6506,6 +6561,10 @@ function copyDates(dates) {
 // CONCATENATED MODULE: ./es/datetime-picker/utils.js
 
 function times(n, iteratee) {
+  if (n < 0) {
+    return [];
+  }
+
   var index = -1;
   var result = Array(n);
 
@@ -6626,11 +6685,9 @@ var Month_createNamespace = Object(create["a" /* createNamespace */])('calendar-
   },
   methods: {
     getHeight: function getHeight() {
-      if (!this.height) {
-        this.height = this.$el.getBoundingClientRect().height;
-      }
+      var _this$$el;
 
-      return this.height;
+      return ((_this$$el = this.$el) == null ? void 0 : _this$$el.getBoundingClientRect().height) || 0;
     },
     scrollIntoView: function scrollIntoView(body) {
       var _this$$refs = this.$refs,
@@ -7026,6 +7083,11 @@ var Header_createNamespace = Object(create["a" /* createNamespace */])('calendar
       }
     }
   },
+  inject: {
+    vanPopup: {
+      default: null
+    }
+  },
   data: function data() {
     return {
       subtitle: '',
@@ -7076,7 +7138,11 @@ var Header_createNamespace = Object(create["a" /* createNamespace */])('calendar
     }
   },
   mounted: function mounted() {
-    this.init();
+    var _this$vanPopup;
+
+    this.init(); // https://github.com/youzan/vant/issues/9845
+
+    (_this$vanPopup = this.vanPopup) == null ? void 0 : _this$vanPopup.$on('opened', this.onScroll);
   },
 
   /* istanbul ignore next */
@@ -8777,6 +8843,10 @@ var cascader_createNamespace = Object(create["a" /* createNamespace */])('cascad
     closeable: {
       type: Boolean,
       default: true
+    },
+    showHeader: {
+      type: Boolean,
+      default: true
     }
   },
   data: function data() {
@@ -8937,19 +9007,22 @@ var cascader_createNamespace = Object(create["a" /* createNamespace */])('cascad
     },
     renderHeader: function renderHeader() {
       var h = this.$createElement;
-      return h("div", {
-        "class": cascader_bem('header')
-      }, [h("h2", {
-        "class": cascader_bem('title')
-      }, [this.slots('title') || this.title]), this.closeable ? h(es_icon, {
-        "attrs": {
-          "name": "cross"
-        },
-        "class": cascader_bem('close-icon'),
-        "on": {
-          "click": this.onClose
-        }
-      }) : null]);
+
+      if (this.showHeader) {
+        return h("div", {
+          "class": cascader_bem('header')
+        }, [h("h2", {
+          "class": cascader_bem('title')
+        }, [this.slots('title') || this.title]), this.closeable ? h(es_icon, {
+          "attrs": {
+            "name": "cross"
+          },
+          "class": cascader_bem('close-icon'),
+          "on": {
+            "click": this.onClose
+          }
+        }) : null]);
+      }
     },
     renderOptions: function renderOptions(options, selectedOption, tabIndex) {
       var _this4 = this;
@@ -9509,6 +9582,10 @@ var CELL_SLOTS = ['title', 'icon', 'right-icon'];
   props: _extends({}, cellProps, {
     name: [Number, String],
     disabled: Boolean,
+    lazyRender: {
+      type: Boolean,
+      default: true
+    },
     isLink: {
       type: Boolean,
       default: true
@@ -9657,7 +9734,7 @@ var CELL_SLOTS = ['title', 'icon', 'right-icon'];
     genContent: function genContent() {
       var h = this.$createElement;
 
-      if (this.inited) {
+      if (this.inited || !this.lazyRender) {
         return h("div", {
           "directives": [{
             name: "show",
@@ -10823,9 +10900,31 @@ var TimePickerMixin = {
     });
   },
   methods: {
-    // @exposed-api
     getPicker: function getPicker() {
       return this.$refs.picker;
+    },
+    // https://github.com/youzan/vant/issues/10013
+    getProxiedPicker: function getProxiedPicker() {
+      var _this4 = this;
+
+      var picker = this.$refs.picker;
+
+      if (picker) {
+        var proxy = function proxy(fn) {
+          return function () {
+            picker[fn].apply(picker, arguments);
+
+            _this4.updateInnerValue();
+          };
+        };
+
+        return _extends({}, picker, {
+          setValues: proxy('setValues'),
+          setIndexes: proxy('setIndexes'),
+          setColumnIndex: proxy('setColumnIndex'),
+          setColumnValue: proxy('setColumnValue')
+        });
+      }
     },
     onConfirm: function onConfirm() {
       this.$emit('input', this.innerValue);
@@ -10836,14 +10935,14 @@ var TimePickerMixin = {
     }
   },
   render: function render() {
-    var _this4 = this;
+    var _this5 = this;
 
     var h = arguments[0];
     var props = {};
     Object.keys(pickerProps).forEach(function (key) {
-      props[key] = _this4[key];
+      props[key] = _this5[key];
     });
-    return h(picker, {
+    return h(es_picker, {
       "ref": "picker",
       "attrs": {
         "columns": this.columns,
@@ -10976,6 +11075,9 @@ var TimePicker_createNamespace = Object(create["a" /* createNamespace */])('time
       this.updateInnerValue();
       this.$nextTick(function () {
         _this2.$nextTick(function () {
+          // https://github.com/youzan/vant/issues/9775
+          _this2.updateInnerValue();
+
           _this2.$emit('change', picker);
         });
       });
@@ -11308,6 +11410,9 @@ var DatePicker_createNamespace = Object(create["a" /* createNamespace */])('date
       this.updateInnerValue();
       this.$nextTick(function () {
         _this4.$nextTick(function () {
+          // https://github.com/youzan/vant/issues/9775
+          _this4.updateInnerValue();
+
           _this4.$emit('change', picker);
         });
       });
@@ -11360,7 +11465,7 @@ var datetime_picker_createNamespace = Object(create["a" /* createNamespace */])(
   methods: {
     // @exposed-api
     getPicker: function getPicker() {
-      return this.$refs.root.getPicker();
+      return this.$refs.root.getProxiedPicker();
     }
   },
   render: function render() {
@@ -13175,10 +13280,11 @@ function getDistance(touches) {
           offsetX = _this$offsetX === void 0 ? 0 : _this$offsetX;
       this.touchStart(event);
       this.touchStartTime = new Date();
+      this.fingerNum = touches.length;
       this.startMoveX = this.moveX;
       this.startMoveY = this.moveY;
-      this.moving = touches.length === 1 && this.scale !== 1;
-      this.zooming = touches.length === 2 && !offsetX;
+      this.moving = this.fingerNum === 1 && this.scale !== 1;
+      this.zooming = this.fingerNum === 2 && !offsetX;
 
       if (this.zooming) {
         this.startScale = this.scale;
@@ -13243,13 +13349,17 @@ function getDistance(touches) {
     checkTap: function checkTap() {
       var _this = this;
 
+      if (this.fingerNum > 1) {
+        return;
+      }
+
       var _this$offsetX2 = this.offsetX,
           offsetX = _this$offsetX2 === void 0 ? 0 : _this$offsetX2,
           _this$offsetY = this.offsetY,
           offsetY = _this$offsetY === void 0 ? 0 : _this$offsetY;
       var deltaTime = new Date() - this.touchStartTime;
       var TAP_TIME = 250;
-      var TAP_OFFSET = 10;
+      var TAP_OFFSET = 5;
 
       if (offsetX < TAP_OFFSET && offsetY < TAP_OFFSET && deltaTime < TAP_TIME) {
         if (this.doubleTapTimer) {
@@ -13323,6 +13433,7 @@ function getDistance(touches) {
     className: null,
     closeable: Boolean,
     asyncClose: Boolean,
+    overlayStyle: Object,
     showIndicators: Boolean,
     images: {
       type: Array,
@@ -13556,6 +13667,7 @@ var image_preview_defaultConfig = {
   asyncClose: false,
   transition: 'van-fade',
   getContainer: 'body',
+  overlayStyle: null,
   startPosition: 0,
   swipeDuration: 300,
   showIndicators: false,
@@ -14152,8 +14264,16 @@ var nav_bar_createNamespace = Object(create["a" /* createNamespace */])('nav-bar
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
     if (this.placeholder && this.fixed) {
-      this.height = this.$refs.navBar.getBoundingClientRect().height;
+      var setHeight = function setHeight() {
+        _this.height = _this.$refs.navBar.getBoundingClientRect().height;
+      };
+
+      setHeight(); // https://github.com/youzan/vant/issues/10131
+
+      setTimeout(setHeight, 100);
     }
   },
   methods: {
@@ -14259,7 +14379,7 @@ var notice_bar_createNamespace = Object(create["a" /* createNamespace */])('noti
   mixins: [BindEventMixin(function (bind) {
     // fix cache issues with forwards and back history in safari
     // see: https://guwii.com/cache-issues-with-forwards-and-back-history-in-safari/
-    bind(window, 'pageshow', this.start);
+    bind(window, 'pageshow', this.reset);
   })],
   inject: {
     vanPopup: {
@@ -14296,24 +14416,20 @@ var notice_bar_createNamespace = Object(create["a" /* createNamespace */])('noti
     };
   },
   watch: {
-    scrollable: 'start',
+    scrollable: 'reset',
     text: {
-      handler: 'start',
+      handler: 'reset',
       immediate: true
     }
   },
   created: function created() {
-    var _this = this; // https://github.com/youzan/vant/issues/8634
-
-
+    // https://github.com/youzan/vant/issues/8634
     if (this.vanPopup) {
-      this.vanPopup.onReopen(function () {
-        _this.start();
-      });
+      this.vanPopup.onReopen(this.reset);
     }
   },
   activated: function activated() {
-    this.start();
+    this.reset();
   },
   methods: {
     onClickIcon: function onClickIcon(event) {
@@ -14323,7 +14439,7 @@ var notice_bar_createNamespace = Object(create["a" /* createNamespace */])('noti
       }
     },
     onTransitionEnd: function onTransitionEnd() {
-      var _this2 = this;
+      var _this = this;
 
       this.offset = this.wrapWidth;
       this.duration = 0; // wait for Vue to render offset
@@ -14332,50 +14448,52 @@ var notice_bar_createNamespace = Object(create["a" /* createNamespace */])('noti
       Object(raf["c" /* raf */])(function () {
         // use double raf to ensure animation can start
         Object(raf["b" /* doubleRaf */])(function () {
-          _this2.offset = -_this2.contentWidth;
-          _this2.duration = (_this2.contentWidth + _this2.wrapWidth) / _this2.speed;
+          _this.offset = -_this.contentWidth;
+          _this.duration = (_this.contentWidth + _this.wrapWidth) / _this.speed;
 
-          _this2.$emit('replay');
+          _this.$emit('replay');
         });
       });
     },
+    // not an exposed-api, but may used by some users
+    start: function start() {
+      this.reset();
+    },
+    // @exposed-api
     reset: function reset() {
+      var _this2 = this;
+
+      var delay = Object(utils["c" /* isDef */])(this.delay) ? this.delay * 1000 : 0;
       this.offset = 0;
       this.duration = 0;
       this.wrapWidth = 0;
       this.contentWidth = 0;
-    },
-    start: function start() {
-      var _this3 = this;
-
-      var delay = Object(utils["c" /* isDef */])(this.delay) ? this.delay * 1000 : 0;
-      this.reset();
       clearTimeout(this.startTimer);
       this.startTimer = setTimeout(function () {
-        var _this3$$refs = _this3.$refs,
-            wrap = _this3$$refs.wrap,
-            content = _this3$$refs.content;
+        var _this2$$refs = _this2.$refs,
+            wrap = _this2$$refs.wrap,
+            content = _this2$$refs.content;
 
-        if (!wrap || !content || _this3.scrollable === false) {
+        if (!wrap || !content || _this2.scrollable === false) {
           return;
         }
 
         var wrapWidth = wrap.getBoundingClientRect().width;
         var contentWidth = content.getBoundingClientRect().width;
 
-        if (_this3.scrollable || contentWidth > wrapWidth) {
+        if (_this2.scrollable || contentWidth > wrapWidth) {
           Object(raf["b" /* doubleRaf */])(function () {
-            _this3.offset = -contentWidth;
-            _this3.duration = contentWidth / _this3.speed;
-            _this3.wrapWidth = wrapWidth;
-            _this3.contentWidth = contentWidth;
+            _this2.offset = -contentWidth;
+            _this2.duration = contentWidth / _this2.speed;
+            _this2.wrapWidth = wrapWidth;
+            _this2.contentWidth = contentWidth;
           });
         }
       }, delay);
     }
   },
   render: function render() {
-    var _this4 = this;
+    var _this3 = this;
 
     var h = arguments[0];
     var slots = this.slots,
@@ -14450,7 +14568,7 @@ var notice_bar_createNamespace = Object(create["a" /* createNamespace */])('noti
       "style": barStyle,
       "on": {
         "click": function click(event) {
-          _this4.$emit('click', event);
+          _this3.$emit('click', event);
         }
       }
     }, [LeftIcon(), h("div", {
@@ -15616,10 +15734,10 @@ var right = 'right';
 var esm_left = 'left';
 var auto = 'auto';
 var basePlacements = [esm_top, esm_bottom, right, esm_left];
-var esm_start = 'start';
+var start = 'start';
 var end = 'end';
 var placements = /*#__PURE__*/[].concat(basePlacements, [auto]).reduce(function (acc, placement) {
-  return acc.concat([placement, placement + "-" + esm_start, placement + "-" + end]);
+  return acc.concat([placement, placement + "-" + start, placement + "-" + end]);
 }, []); // modifiers that need to read the DOM
 
 var beforeRead = 'beforeRead';
@@ -15872,7 +15990,7 @@ function computeOffsets(_ref) {
     var len = mainAxis === 'y' ? 'height' : 'width';
 
     switch (variation) {
-      case esm_start:
+      case start:
         offsets[mainAxis] = offsets[mainAxis] - (reference[len] / 2 - element[len] / 2);
         break;
 
@@ -18919,8 +19037,8 @@ var QUOTA_LIMIT = LIMIT_TYPE.QUOTA_LIMIT,
 // CONCATENATED MODULE: ./es/utils/validate/email.js
 /* eslint-disable */
 function isEmail(value) {
-  var reg = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$/i;
-  return reg.test(value);
+  var reg = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  return reg.test(value.trim());
 }
 // CONCATENATED MODULE: ./es/uploader/utils.js
 
@@ -19081,6 +19199,14 @@ var uploader_createNamespace = Object(create["a" /* createNamespace */])('upload
     value: function value() {
       return this.fileList;
     }
+  },
+  created: function created() {
+    this.urls = [];
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.urls.forEach(function (url) {
+      return URL.revokeObjectURL(url);
+    });
   },
   methods: {
     getDetail: function getDetail(index) {
@@ -19260,7 +19386,13 @@ var uploader_createNamespace = Object(create["a" /* createNamespace */])('upload
         return isImageFile(item);
       });
       var imageContents = imageFiles.map(function (item) {
-        return item.content || item.url;
+        if (item.file && !item.url) {
+          item.url = URL.createObjectURL(item.file);
+
+          _this5.urls.push(item.url);
+        }
+
+        return item.url;
       });
       this.imagePreview = image_preview(_extends({
         images: imageContents,
@@ -21003,6 +21135,7 @@ var isSameValue = function isSameValue(newValue, oldValue) {
     var renderButton = function renderButton(i) {
       var map = ['left', 'right'];
       var isNumber = typeof i === 'number';
+      var current = isNumber ? _this.value[i] : _this.value;
 
       var getClassName = function getClassName() {
         if (isNumber) {
@@ -21018,6 +21151,27 @@ var isSameValue = function isSameValue(newValue, oldValue) {
         }
 
         return "wrapper";
+      };
+
+      var renderButtonContent = function renderButtonContent() {
+        if (isNumber) {
+          var slot = _this.slots(i === 0 ? 'left-button' : 'right-button', {
+            value: current
+          });
+
+          if (slot) {
+            return slot;
+          }
+        }
+
+        if (_this.slots('button')) {
+          return _this.slots('button');
+        }
+
+        return h("div", {
+          "class": slider_bem('button'),
+          "style": _this.buttonStyle
+        });
       };
 
       return h("div", {
@@ -21042,10 +21196,7 @@ var isSameValue = function isSameValue(newValue, oldValue) {
             return e.stopPropagation();
           }
         }
-      }, [_this.slots('button') || h("div", {
-        "class": slider_bem('button'),
-        "style": _this.buttonStyle
-      })]);
+      }, [renderButtonContent()]);
     };
 
     return h("div", {
@@ -21662,32 +21813,40 @@ var tabbar_createNamespace = Object(create["a" /* createNamespace */])('tabbar')
     children: 'setActiveItem'
   },
   mounted: function mounted() {
+    var _this = this;
+
     if (this.placeholder && this.fixed) {
-      this.height = this.$refs.tabbar.getBoundingClientRect().height;
+      var setHeight = function setHeight() {
+        _this.height = _this.$refs.tabbar.getBoundingClientRect().height;
+      };
+
+      setHeight(); // https://github.com/youzan/vant/issues/10131
+
+      setTimeout(setHeight, 100);
     }
   },
   methods: {
     setActiveItem: function setActiveItem() {
-      var _this = this;
-
-      this.children.forEach(function (item, index) {
-        item.active = (item.name || index) === _this.value;
-      });
-    },
-    onChange: function onChange(active) {
       var _this2 = this;
 
-      if (active !== this.value) {
-        callInterceptor({
-          interceptor: this.beforeChange,
-          args: [active],
-          done: function done() {
-            _this2.$emit('input', active);
+      this.children.forEach(function (item, index) {
+        item.nameMatched = (item.name || index) === _this2.value;
+      });
+    },
+    triggerChange: function triggerChange(active, afterChange) {
+      var _this3 = this;
 
-            _this2.$emit('change', active);
-          }
-        });
-      }
+      callInterceptor({
+        interceptor: this.beforeChange,
+        args: [active],
+        done: function done() {
+          _this3.$emit('input', active);
+
+          _this3.$emit('change', active);
+
+          afterChange();
+        }
+      });
     },
     genTabbar: function genTabbar() {
       var _ref;
@@ -21748,11 +21907,11 @@ var tabbar_item_createNamespace = Object(create["a" /* createNamespace */])('tab
   }),
   data: function data() {
     return {
-      active: false
+      nameMatched: false
     };
   },
   computed: {
-    routeActive: function routeActive() {
+    routeMatched: function routeMatched() {
       var to = this.to,
           $route = this.$route;
 
@@ -21760,22 +21919,33 @@ var tabbar_item_createNamespace = Object(create["a" /* createNamespace */])('tab
         var config = Object(utils["f" /* isObject */])(to) ? to : {
           path: to
         };
-        var pathMatched = config.path === $route.path;
-        var nameMatched = Object(utils["c" /* isDef */])(config.name) && config.name === $route.name;
-        return pathMatched || nameMatched;
+        return !!$route.matched.find(function (r) {
+          var pathMatched = config.path === r.path;
+          var nameMatched = Object(utils["c" /* isDef */])(config.name) && config.name === r.name;
+          return pathMatched || nameMatched;
+        });
       }
+    },
+    active: function active() {
+      return this.parent.route ? this.routeMatched : this.nameMatched;
     }
   },
   methods: {
     onClick: function onClick(event) {
-      this.parent.onChange(this.name || this.index);
+      var _this = this;
+
+      if (!this.active) {
+        this.parent.triggerChange(this.name || this.index, function () {
+          route(_this.$router, _this);
+        });
+      }
+
       this.$emit('click', event);
-      route(this.$router, this);
     },
-    genIcon: function genIcon(active) {
+    genIcon: function genIcon() {
       var h = this.$createElement;
       var slot = this.slots('icon', {
-        active: active
+        active: this.active
       });
 
       if (slot) {
@@ -21796,7 +21966,7 @@ var tabbar_item_createNamespace = Object(create["a" /* createNamespace */])('tab
     var _this$badge;
 
     var h = arguments[0];
-    var active = this.parent.route ? this.routeActive : this.active;
+    var active = this.active;
     var color = this.parent[active ? 'activeColor' : 'inactiveColor'];
 
     if (false) {}
@@ -21813,7 +21983,7 @@ var tabbar_item_createNamespace = Object(create["a" /* createNamespace */])('tab
       }
     }, [h("div", {
       "class": tabbar_item_bem('icon')
-    }, [this.genIcon(active), h(es_info, {
+    }, [this.genIcon(), h(es_info, {
       "attrs": {
         "dot": this.dot,
         "info": (_this$badge = this.badge) != null ? _this$badge : this.info
@@ -22056,10 +22226,10 @@ TreeSelect.props = {
 
 
 
-var version = '2.12.31';
+var version = '2.12.44';
 
 function install(Vue) {
-  var components = [action_sheet, address_edit, address_list, es_area, badge, es_button, calendar, card, cascader, cell, cell_group, es_checkbox, checkbox_group, circle, col, collapse, collapse_item, contact_card, contact_edit, contact_list, count_down, es_coupon, coupon_cell, coupon_list, datetime_picker, dialog, divider, dropdown_item, dropdown_menu, empty, es_field, es_form, goods_action, goods_action_button, goods_action_icon, grid, grid_item, es_icon, es_image, image_preview, index_anchor, index_bar, es_info, es_list, es_loading, locale["a" /* default */], nav_bar, notice_bar, notify, number_keyboard, es_overlay, pagination, panel, password_input, picker, popover, popup, es_progress, pull_refresh, es_radio, radio_group, es_rate, row, search, share_sheet, sidebar, sidebar_item, skeleton, es_sku, slider, es_step, stepper, steps, es_sticky, submit_bar, swipe, swipe_cell, swipe_item, es_switch, switch_cell, tab, tabbar, tabbar_item, tabs, es_tag, es_toast, tree_select, uploader];
+  var components = [action_sheet, address_edit, address_list, es_area, badge, es_button, calendar, card, cascader, cell, cell_group, es_checkbox, checkbox_group, circle, col, collapse, collapse_item, contact_card, contact_edit, contact_list, count_down, es_coupon, coupon_cell, coupon_list, datetime_picker, dialog, divider, dropdown_item, dropdown_menu, empty, es_field, es_form, goods_action, goods_action_button, goods_action_icon, grid, grid_item, es_icon, es_image, image_preview, index_anchor, index_bar, es_info, es_list, es_loading, locale["a" /* default */], nav_bar, notice_bar, notify, number_keyboard, es_overlay, pagination, panel, password_input, es_picker, popover, popup, es_progress, pull_refresh, es_radio, radio_group, es_rate, row, search, share_sheet, sidebar, sidebar_item, skeleton, es_sku, slider, es_step, stepper, steps, es_sticky, submit_bar, swipe, swipe_cell, swipe_item, es_switch, switch_cell, tab, tabbar, tabbar_item, tabs, es_tag, es_toast, tree_select, uploader];
   components.forEach(function (item) {
     if (item.install) {
       Vue.use(item);

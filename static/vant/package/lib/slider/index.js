@@ -243,6 +243,7 @@ var _default = createComponent({
     var renderButton = function renderButton(i) {
       var map = ['left', 'right'];
       var isNumber = typeof i === 'number';
+      var current = isNumber ? _this.value[i] : _this.value;
 
       var getClassName = function getClassName() {
         if (isNumber) {
@@ -258,6 +259,27 @@ var _default = createComponent({
         }
 
         return "wrapper";
+      };
+
+      var renderButtonContent = function renderButtonContent() {
+        if (isNumber) {
+          var slot = _this.slots(i === 0 ? 'left-button' : 'right-button', {
+            value: current
+          });
+
+          if (slot) {
+            return slot;
+          }
+        }
+
+        if (_this.slots('button')) {
+          return _this.slots('button');
+        }
+
+        return h("div", {
+          "class": bem('button'),
+          "style": _this.buttonStyle
+        });
       };
 
       return h("div", {
@@ -282,10 +304,7 @@ var _default = createComponent({
             return e.stopPropagation();
           }
         }
-      }, [_this.slots('button') || h("div", {
-        "class": bem('button'),
-        "style": _this.buttonStyle
-      })]);
+      }, [renderButtonContent()]);
     };
 
     return h("div", {

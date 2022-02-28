@@ -1,5 +1,6 @@
 .vercel
-/node_modules
+node_modules
+dist
 
 # Logs
 logs
@@ -22,9 +23,13 @@ lerna-debug.log*
 .settings/
 *.sublime-workspace
 
+
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+

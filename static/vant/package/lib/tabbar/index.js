@@ -61,32 +61,40 @@ var _default = createComponent({
     children: 'setActiveItem'
   },
   mounted: function mounted() {
+    var _this = this;
+
     if (this.placeholder && this.fixed) {
-      this.height = this.$refs.tabbar.getBoundingClientRect().height;
+      var setHeight = function setHeight() {
+        _this.height = _this.$refs.tabbar.getBoundingClientRect().height;
+      };
+
+      setHeight(); // https://github.com/youzan/vant/issues/10131
+
+      setTimeout(setHeight, 100);
     }
   },
   methods: {
     setActiveItem: function setActiveItem() {
-      var _this = this;
-
-      this.children.forEach(function (item, index) {
-        item.active = (item.name || index) === _this.value;
-      });
-    },
-    onChange: function onChange(active) {
       var _this2 = this;
 
-      if (active !== this.value) {
-        (0, _interceptor.callInterceptor)({
-          interceptor: this.beforeChange,
-          args: [active],
-          done: function done() {
-            _this2.$emit('input', active);
+      this.children.forEach(function (item, index) {
+        item.nameMatched = (item.name || index) === _this2.value;
+      });
+    },
+    triggerChange: function triggerChange(active, afterChange) {
+      var _this3 = this;
 
-            _this2.$emit('change', active);
-          }
-        });
-      }
+      (0, _interceptor.callInterceptor)({
+        interceptor: this.beforeChange,
+        args: [active],
+        done: function done() {
+          _this3.$emit('input', active);
+
+          _this3.$emit('change', active);
+
+          afterChange();
+        }
+      });
     },
     genTabbar: function genTabbar() {
       var _ref;

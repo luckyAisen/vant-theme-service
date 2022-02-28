@@ -11,7 +11,7 @@ export default createComponent({
   mixins: [BindEventMixin(function (bind) {
     // fix cache issues with forwards and back history in safari
     // see: https://guwii.com/cache-issues-with-forwards-and-back-history-in-safari/
-    bind(window, 'pageshow', this.start);
+    bind(window, 'pageshow', this.reset);
   })],
   inject: {
     vanPopup: {
@@ -48,24 +48,20 @@ export default createComponent({
     };
   },
   watch: {
-    scrollable: 'start',
+    scrollable: 'reset',
     text: {
-      handler: 'start',
+      handler: 'reset',
       immediate: true
     }
   },
   created: function created() {
-    var _this = this;
-
     // https://github.com/youzan/vant/issues/8634
     if (this.vanPopup) {
-      this.vanPopup.onReopen(function () {
-        _this.start();
-      });
+      this.vanPopup.onReopen(this.reset);
     }
   },
   activated: function activated() {
-    this.start();
+    this.reset();
   },
   methods: {
     onClickIcon: function onClickIcon(event) {
@@ -75,7 +71,7 @@ export default createComponent({
       }
     },
     onTransitionEnd: function onTransitionEnd() {
-      var _this2 = this;
+      var _this = this;
 
       this.offset = this.wrapWidth;
       this.duration = 0; // wait for Vue to render offset
@@ -84,50 +80,52 @@ export default createComponent({
       raf(function () {
         // use double raf to ensure animation can start
         doubleRaf(function () {
-          _this2.offset = -_this2.contentWidth;
-          _this2.duration = (_this2.contentWidth + _this2.wrapWidth) / _this2.speed;
+          _this.offset = -_this.contentWidth;
+          _this.duration = (_this.contentWidth + _this.wrapWidth) / _this.speed;
 
-          _this2.$emit('replay');
+          _this.$emit('replay');
         });
       });
     },
+    // not an exposed-api, but may used by some users
+    start: function start() {
+      this.reset();
+    },
+    // @exposed-api
     reset: function reset() {
+      var _this2 = this;
+
+      var delay = isDef(this.delay) ? this.delay * 1000 : 0;
       this.offset = 0;
       this.duration = 0;
       this.wrapWidth = 0;
       this.contentWidth = 0;
-    },
-    start: function start() {
-      var _this3 = this;
-
-      var delay = isDef(this.delay) ? this.delay * 1000 : 0;
-      this.reset();
       clearTimeout(this.startTimer);
       this.startTimer = setTimeout(function () {
-        var _this3$$refs = _this3.$refs,
-            wrap = _this3$$refs.wrap,
-            content = _this3$$refs.content;
+        var _this2$$refs = _this2.$refs,
+            wrap = _this2$$refs.wrap,
+            content = _this2$$refs.content;
 
-        if (!wrap || !content || _this3.scrollable === false) {
+        if (!wrap || !content || _this2.scrollable === false) {
           return;
         }
 
         var wrapWidth = wrap.getBoundingClientRect().width;
         var contentWidth = content.getBoundingClientRect().width;
 
-        if (_this3.scrollable || contentWidth > wrapWidth) {
+        if (_this2.scrollable || contentWidth > wrapWidth) {
           doubleRaf(function () {
-            _this3.offset = -contentWidth;
-            _this3.duration = contentWidth / _this3.speed;
-            _this3.wrapWidth = wrapWidth;
-            _this3.contentWidth = contentWidth;
+            _this2.offset = -contentWidth;
+            _this2.duration = contentWidth / _this2.speed;
+            _this2.wrapWidth = wrapWidth;
+            _this2.contentWidth = contentWidth;
           });
         }
       }, delay);
     }
   },
   render: function render() {
-    var _this4 = this;
+    var _this3 = this;
 
     var h = arguments[0];
     var slots = this.slots,
@@ -202,7 +200,7 @@ export default createComponent({
       "style": barStyle,
       "on": {
         "click": function click(event) {
-          _this4.$emit('click', event);
+          _this3.$emit('click', event);
         }
       }
     }, [LeftIcon(), h("div", {

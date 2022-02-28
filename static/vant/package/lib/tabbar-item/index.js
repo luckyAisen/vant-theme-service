@@ -37,11 +37,11 @@ var _default = createComponent({
   }),
   data: function data() {
     return {
-      active: false
+      nameMatched: false
     };
   },
   computed: {
-    routeActive: function routeActive() {
+    routeMatched: function routeMatched() {
       var to = this.to,
           $route = this.$route;
 
@@ -49,22 +49,33 @@ var _default = createComponent({
         var config = (0, _utils.isObject)(to) ? to : {
           path: to
         };
-        var pathMatched = config.path === $route.path;
-        var nameMatched = (0, _utils.isDef)(config.name) && config.name === $route.name;
-        return pathMatched || nameMatched;
+        return !!$route.matched.find(function (r) {
+          var pathMatched = config.path === r.path;
+          var nameMatched = (0, _utils.isDef)(config.name) && config.name === r.name;
+          return pathMatched || nameMatched;
+        });
       }
+    },
+    active: function active() {
+      return this.parent.route ? this.routeMatched : this.nameMatched;
     }
   },
   methods: {
     onClick: function onClick(event) {
-      this.parent.onChange(this.name || this.index);
+      var _this = this;
+
+      if (!this.active) {
+        this.parent.triggerChange(this.name || this.index, function () {
+          (0, _router.route)(_this.$router, _this);
+        });
+      }
+
       this.$emit('click', event);
-      (0, _router.route)(this.$router, this);
     },
-    genIcon: function genIcon(active) {
+    genIcon: function genIcon() {
       var h = this.$createElement;
       var slot = this.slots('icon', {
-        active: active
+        active: this.active
       });
 
       if (slot) {
@@ -85,7 +96,7 @@ var _default = createComponent({
     var _this$badge;
 
     var h = arguments[0];
-    var active = this.parent.route ? this.routeActive : this.active;
+    var active = this.active;
     var color = this.parent[active ? 'activeColor' : 'inactiveColor'];
 
     if (process.env.NODE_ENV === 'development' && this.info) {
@@ -104,7 +115,7 @@ var _default = createComponent({
       }
     }, [h("div", {
       "class": bem('icon')
-    }, [this.genIcon(active), h(_info.default, {
+    }, [this.genIcon(), h(_info.default, {
       "attrs": {
         "dot": this.dot,
         "info": (_this$badge = this.badge) != null ? _this$badge : this.info

@@ -98,11 +98,9 @@ var _default = createComponent({
   },
   methods: {
     getHeight: function getHeight() {
-      if (!this.height) {
-        this.height = this.$el.getBoundingClientRect().height;
-      }
+      var _this$$el;
 
-      return this.height;
+      return ((_this$$el = this.$el) == null ? void 0 : _this$$el.getBoundingClientRect().height) || 0;
     },
     scrollIntoView: function scrollIntoView(body) {
       var _this$$refs = this.$refs,

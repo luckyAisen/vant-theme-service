@@ -29,8 +29,16 @@ export default createComponent({
     };
   },
   mounted: function mounted() {
+    var _this = this;
+
     if (this.placeholder && this.fixed) {
-      this.height = this.$refs.navBar.getBoundingClientRect().height;
+      var setHeight = function setHeight() {
+        _this.height = _this.$refs.navBar.getBoundingClientRect().height;
+      };
+
+      setHeight(); // https://github.com/youzan/vant/issues/10131
+
+      setTimeout(setHeight, 100);
     }
   },
   methods: {

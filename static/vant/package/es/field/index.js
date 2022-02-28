@@ -339,13 +339,15 @@ export default createComponent({
 
       /* istanbul ignore if */
 
-      var readonly = this.getProp('readonly');
-
-      if (readonly) {
+      if (this.getProp('readonly')) {
         this.blur();
       }
     },
     onBlur: function onBlur(event) {
+      if (this.getProp('readonly')) {
+        return;
+      }
+
       this.focused = false;
       this.updateValue(this.value, 'onBlur');
       this.$emit('blur', event);

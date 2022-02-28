@@ -2,455 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/JetBrains/web-types/master/schema/web-types.json",
   "framework": "vue",
   "name": "vant",
-  "version": "2.12.31",
+  "version": "2.12.44",
   "contributions": {
     "html": {
       "tags": [
-        {
-          "name": "van-action-sheet",
-          "slots": [
-            {
-              "name": "default",
-              "description": "自定义面板的展示内容"
-            },
-            {
-              "name": "description",
-              "description": "自定义描述文案"
-            }
-          ],
-          "events": [
-            {
-              "name": "select",
-              "description": "点击选项时触发，禁用或加载状态下不会触发"
-            },
-            {
-              "name": "cancel",
-              "description": "点击取消按钮时触发"
-            },
-            {
-              "name": "open",
-              "description": "打开面板时触发"
-            },
-            {
-              "name": "close",
-              "description": "关闭面板时触发"
-            },
-            {
-              "name": "opened",
-              "description": "打开面板且动画结束后触发"
-            },
-            {
-              "name": "closed",
-              "description": "关闭面板且动画结束后触发"
-            },
-            {
-              "name": "click-overlay",
-              "description": "点击遮罩层时触发"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "v-model (value)",
-              "default": "`false`",
-              "description": "是否显示动作面板",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "actions",
-              "default": "`[]`",
-              "description": "面板选项列表",
-              "value": {
-                "type": "Action[]",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "title",
-              "default": "-",
-              "description": "顶部标题",
-              "value": {
-                "type": "string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "cancel-text",
-              "default": "-",
-              "description": "取消按钮文字",
-              "value": {
-                "type": "string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "description",
-              "default": "-",
-              "description": "选项上方的描述信息",
-              "value": {
-                "type": "string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "closeable",
-              "default": "`true`",
-              "description": "是否显示关闭图标",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "close-icon",
-              "default": "`cross`",
-              "description": "关闭[图标名称](#/zh-CN/icon)或图片链接",
-              "value": {
-                "type": "string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "duration",
-              "default": "`0.3`",
-              "description": "动画时长，单位秒",
-              "value": {
-                "type": "number | string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "round",
-              "default": "`true`",
-              "description": "是否显示圆角",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "overlay",
-              "default": "`true`",
-              "description": "是否显示遮罩层",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "lock-scroll",
-              "default": "`true`",
-              "description": "是否锁定背景滚动",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "lazy-render",
-              "default": "`true`",
-              "description": "是否在显示弹层时才渲染节点",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "close-on-popstate",
-              "default": "`false`",
-              "description": "是否在页面回退时自动关闭",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "close-on-click-action",
-              "default": "`false`",
-              "description": "是否在点击选项后关闭",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "close-on-click-overlay",
-              "default": "`true`",
-              "description": "是否在点击遮罩层后关闭",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "safe-area-inset-bottom",
-              "default": "`true`",
-              "description": "是否开启[底部安全区适配](#/zh-CN/advanced-usage#di-bu-an-quan-qu-gua-pei)",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "get-container",
-              "default": "-",
-              "description": "指定挂载的节点，[用法示例](#/zh-CN/popup#zhi-ding-gua-zai-wei-zhi)",
-              "value": {
-                "type": "string | () => Element",
-                "kind": "expression"
-              }
-            }
-          ]
-        },
-        {
-          "name": "van-address-edit",
-          "slots": [
-            {
-              "name": "default",
-              "description": "在邮政编码下方插入内容"
-            }
-          ],
-          "events": [
-            {
-              "name": "save",
-              "description": "点击保存按钮时触发"
-            },
-            {
-              "name": "focus",
-              "description": "输入框聚焦时触发"
-            },
-            {
-              "name": "delete",
-              "description": "确认删除地址时触发"
-            },
-            {
-              "name": "cancel-delete",
-              "description": "取消删除地址时触发"
-            },
-            {
-              "name": "select-search",
-              "description": "选中搜索结果时触发"
-            },
-            {
-              "name": "click-area",
-              "description": "点击收件地区时触发"
-            },
-            {
-              "name": "change-area",
-              "description": "修改收件地区时触发"
-            },
-            {
-              "name": "change-detail",
-              "description": "修改详细地址时触发"
-            },
-            {
-              "name": "change-default",
-              "description": "切换是否使用默认地址时触发"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "area-list",
-              "default": "-",
-              "description": "地区列表",
-              "value": {
-                "type": "object",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "area-columns-placeholder",
-              "default": "`[]`",
-              "description": "地区选择列占位提示文字",
-              "value": {
-                "type": "string[]",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "area-placeholder",
-              "default": "`选择省 / 市 / 区`",
-              "description": "地区输入框占位提示文字",
-              "value": {
-                "type": "string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "address-info",
-              "default": "`{}`",
-              "description": "收货人信息初始值",
-              "value": {
-                "type": "AddressInfo",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "search-result",
-              "default": "`[]`",
-              "description": "详细地址搜索结果",
-              "value": {
-                "type": "SearchResult[]",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "show-postal",
-              "default": "`false`",
-              "description": "是否显示邮政编码",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "show-delete",
-              "default": "`false`",
-              "description": "是否显示删除按钮",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "show-set-default",
-              "default": "`false`",
-              "description": "是否显示默认地址栏",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "show-search-result",
-              "default": "`false`",
-              "description": "是否显示搜索结果",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "show-area",
-              "default": "`true`",
-              "description": "是否显示地区",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "show-detail",
-              "default": "`true`",
-              "description": "是否显示详细地址",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "disable-area",
-              "default": "`false`",
-              "description": "是否禁用地区选择",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "save-button-text",
-              "default": "`保存`",
-              "description": "保存按钮文字",
-              "value": {
-                "type": "string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "delete-button-text",
-              "default": "`删除`",
-              "description": "删除按钮文字",
-              "value": {
-                "type": "string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "detail-rows",
-              "default": "`1`",
-              "description": "详细地址输入框行数",
-              "value": {
-                "type": "number | string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "detail-maxlength",
-              "default": "`200`",
-              "description": "详细地址最大长度",
-              "value": {
-                "type": "number | string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "is-saving",
-              "default": "`false`",
-              "description": "是否显示保存按钮加载动画",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "is-deleting",
-              "default": "`false`",
-              "description": "是否显示删除按钮加载动画",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "tel-validator",
-              "default": "-",
-              "description": "手机号格式校验函数",
-              "value": {
-                "type": "string => boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "tel-maxlength",
-              "default": "-",
-              "description": "手机号最大长度",
-              "value": {
-                "type": "number | string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "postal-validator",
-              "default": "-",
-              "description": "邮政编码格式校验函数",
-              "value": {
-                "type": "string => boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "validator",
-              "default": "-",
-              "description": "自定义校验函数",
-              "value": {
-                "type": "(key, val) => string",
-                "kind": "expression"
-              }
-            }
-          ]
-        },
         {
           "name": "van-area",
           "slots": [
@@ -881,112 +436,247 @@
           ]
         },
         {
-          "name": "van-address-list",
+          "name": "van-address-edit",
           "slots": [
             {
               "name": "default",
-              "description": "在列表下方插入内容"
-            },
-            {
-              "name": "top",
-              "description": "在顶部插入内容"
-            },
-            {
-              "name": "item-bottom",
-              "description": "在列表项底部插入内容"
-            },
-            {
-              "name": "tag",
-              "description": "列表项标签内容自定义"
+              "description": "在邮政编码下方插入内容"
             }
           ],
           "events": [
             {
-              "name": "add",
-              "description": "点击新增按钮时触发"
+              "name": "save",
+              "description": "点击保存按钮时触发"
             },
             {
-              "name": "edit",
-              "description": "点击编辑按钮时触发"
+              "name": "focus",
+              "description": "输入框聚焦时触发"
             },
             {
-              "name": "select",
-              "description": "切换选中的地址时触发"
+              "name": "delete",
+              "description": "确认删除地址时触发"
             },
             {
-              "name": "edit-disabled",
-              "description": "编辑不可配送的地址时触发"
+              "name": "cancel-delete",
+              "description": "取消删除地址时触发"
             },
             {
-              "name": "select-disabled",
-              "description": "选中不可配送的地址时触发"
+              "name": "select-search",
+              "description": "选中搜索结果时触发"
             },
             {
-              "name": "click-item",
-              "description": "点击任意地址时触发"
+              "name": "click-area",
+              "description": "点击收件地区时触发"
+            },
+            {
+              "name": "change-area",
+              "description": "修改收件地区时触发"
+            },
+            {
+              "name": "change-detail",
+              "description": "修改详细地址时触发"
+            },
+            {
+              "name": "change-default",
+              "description": "切换是否使用默认地址时触发"
             }
           ],
           "attributes": [
             {
-              "name": "v-model",
+              "name": "area-list",
               "default": "-",
-              "description": "当前选中地址的 id",
+              "description": "地区列表",
+              "value": {
+                "type": "object",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "area-columns-placeholder",
+              "default": "`[]`",
+              "description": "地区选择列占位提示文字",
+              "value": {
+                "type": "string[]",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "area-placeholder",
+              "default": "`选择省 / 市 / 区`",
+              "description": "地区输入框占位提示文字",
               "value": {
                 "type": "string",
                 "kind": "expression"
               }
             },
             {
-              "name": "list",
+              "name": "address-info",
+              "default": "`{}`",
+              "description": "收货人信息初始值",
+              "value": {
+                "type": "AddressInfo",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "search-result",
               "default": "`[]`",
-              "description": "地址列表",
+              "description": "详细地址搜索结果",
               "value": {
-                "type": "Address[]",
+                "type": "SearchResult[]",
                 "kind": "expression"
               }
             },
             {
-              "name": "disabled-list",
-              "default": "`[]`",
-              "description": "不可配送地址列表",
-              "value": {
-                "type": "Address[]",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "disabled-text",
-              "default": "-",
-              "description": "不可配送提示文案",
-              "value": {
-                "type": "string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "switchable",
-              "default": "`true`",
-              "description": "是否允许切换地址",
+              "name": "show-postal",
+              "default": "`false`",
+              "description": "是否显示邮政编码",
               "value": {
                 "type": "boolean",
                 "kind": "expression"
               }
             },
             {
-              "name": "add-button-text",
-              "default": "`新增地址`",
-              "description": "底部按钮文字",
+              "name": "show-delete",
+              "default": "`false`",
+              "description": "是否显示删除按钮",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "show-set-default",
+              "default": "`false`",
+              "description": "是否显示默认地址栏",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "show-search-result",
+              "default": "`false`",
+              "description": "是否显示搜索结果",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "show-area",
+              "default": "`true`",
+              "description": "是否显示地区",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "show-detail",
+              "default": "`true`",
+              "description": "是否显示详细地址",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "disable-area",
+              "default": "`false`",
+              "description": "是否禁用地区选择",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "save-button-text",
+              "default": "`保存`",
+              "description": "保存按钮文字",
               "value": {
                 "type": "string",
                 "kind": "expression"
               }
             },
             {
-              "name": "default-tag-text",
-              "default": "-",
-              "description": "默认地址标签文字",
+              "name": "delete-button-text",
+              "default": "`删除`",
+              "description": "删除按钮文字",
               "value": {
                 "type": "string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "detail-rows",
+              "default": "`1`",
+              "description": "详细地址输入框行数",
+              "value": {
+                "type": "number | string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "detail-maxlength",
+              "default": "`200`",
+              "description": "详细地址最大长度",
+              "value": {
+                "type": "number | string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "is-saving",
+              "default": "`false`",
+              "description": "是否显示保存按钮加载动画",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "is-deleting",
+              "default": "`false`",
+              "description": "是否显示删除按钮加载动画",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "tel-validator",
+              "default": "-",
+              "description": "手机号格式校验函数",
+              "value": {
+                "type": "string => boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "tel-maxlength",
+              "default": "-",
+              "description": "手机号最大长度",
+              "value": {
+                "type": "number | string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "postal-validator",
+              "default": "-",
+              "description": "邮政编码格式校验函数",
+              "value": {
+                "type": "string => boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "validator",
+              "default": "-",
+              "description": "自定义校验函数",
+              "value": {
+                "type": "(key, val) => string",
                 "kind": "expression"
               }
             }
@@ -1341,6 +1031,316 @@
           ]
         },
         {
+          "name": "van-action-sheet",
+          "slots": [
+            {
+              "name": "default",
+              "description": "自定义面板的展示内容"
+            },
+            {
+              "name": "description",
+              "description": "自定义描述文案"
+            }
+          ],
+          "events": [
+            {
+              "name": "select",
+              "description": "点击选项时触发，禁用或加载状态下不会触发"
+            },
+            {
+              "name": "cancel",
+              "description": "点击取消按钮时触发"
+            },
+            {
+              "name": "open",
+              "description": "打开面板时触发"
+            },
+            {
+              "name": "close",
+              "description": "关闭面板时触发"
+            },
+            {
+              "name": "opened",
+              "description": "打开面板且动画结束后触发"
+            },
+            {
+              "name": "closed",
+              "description": "关闭面板且动画结束后触发"
+            },
+            {
+              "name": "click-overlay",
+              "description": "点击遮罩层时触发"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "v-model (value)",
+              "default": "`false`",
+              "description": "是否显示动作面板",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "actions",
+              "default": "`[]`",
+              "description": "面板选项列表",
+              "value": {
+                "type": "Action[]",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "title",
+              "default": "-",
+              "description": "顶部标题",
+              "value": {
+                "type": "string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "cancel-text",
+              "default": "-",
+              "description": "取消按钮文字",
+              "value": {
+                "type": "string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "description",
+              "default": "-",
+              "description": "选项上方的描述信息",
+              "value": {
+                "type": "string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "closeable",
+              "default": "`true`",
+              "description": "是否显示关闭图标",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "close-icon",
+              "default": "`cross`",
+              "description": "关闭[图标名称](#/zh-CN/icon)或图片链接",
+              "value": {
+                "type": "string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "duration",
+              "default": "`0.3`",
+              "description": "动画时长，单位秒",
+              "value": {
+                "type": "number | string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "round",
+              "default": "`true`",
+              "description": "是否显示圆角",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "overlay",
+              "default": "`true`",
+              "description": "是否显示遮罩层",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "lock-scroll",
+              "default": "`true`",
+              "description": "是否锁定背景滚动",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "lazy-render",
+              "default": "`true`",
+              "description": "是否在显示弹层时才渲染节点",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "close-on-popstate",
+              "default": "`false`",
+              "description": "是否在页面回退时自动关闭",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "close-on-click-action",
+              "default": "`false`",
+              "description": "是否在点击选项后关闭",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "close-on-click-overlay",
+              "default": "`true`",
+              "description": "是否在点击遮罩层后关闭",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "safe-area-inset-bottom",
+              "default": "`true`",
+              "description": "是否开启[底部安全区适配](#/zh-CN/advanced-usage#di-bu-an-quan-qu-gua-pei)",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "get-container",
+              "default": "-",
+              "description": "指定挂载的节点，[用法示例](#/zh-CN/popup#zhi-ding-gua-zai-wei-zhi)",
+              "value": {
+                "type": "string | () => Element",
+                "kind": "expression"
+              }
+            }
+          ]
+        },
+        {
+          "name": "van-address-list",
+          "slots": [
+            {
+              "name": "default",
+              "description": "在列表下方插入内容"
+            },
+            {
+              "name": "top",
+              "description": "在顶部插入内容"
+            },
+            {
+              "name": "item-bottom",
+              "description": "在列表项底部插入内容"
+            },
+            {
+              "name": "tag",
+              "description": "列表项标签内容自定义"
+            }
+          ],
+          "events": [
+            {
+              "name": "add",
+              "description": "点击新增按钮时触发"
+            },
+            {
+              "name": "edit",
+              "description": "点击编辑按钮时触发"
+            },
+            {
+              "name": "select",
+              "description": "切换选中的地址时触发"
+            },
+            {
+              "name": "edit-disabled",
+              "description": "编辑不可配送的地址时触发"
+            },
+            {
+              "name": "select-disabled",
+              "description": "选中不可配送的地址时触发"
+            },
+            {
+              "name": "click-item",
+              "description": "点击任意地址时触发"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "v-model",
+              "default": "-",
+              "description": "当前选中地址的 id",
+              "value": {
+                "type": "string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "list",
+              "default": "`[]`",
+              "description": "地址列表",
+              "value": {
+                "type": "Address[]",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "disabled-list",
+              "default": "`[]`",
+              "description": "不可配送地址列表",
+              "value": {
+                "type": "Address[]",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "disabled-text",
+              "default": "-",
+              "description": "不可配送提示文案",
+              "value": {
+                "type": "string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "switchable",
+              "default": "`true`",
+              "description": "是否允许切换地址",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "add-button-text",
+              "default": "`新增地址`",
+              "description": "底部按钮文字",
+              "value": {
+                "type": "string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "default-tag-text",
+              "default": "-",
+              "description": "默认地址标签文字",
+              "value": {
+                "type": "string",
+                "kind": "expression"
+              }
+            }
+          ]
+        },
+        {
           "name": "van-card",
           "slots": [
             {
@@ -1495,98 +1495,6 @@
               "description": "是否开启图片懒加载，须配合 [Lazyload](#/zh-CN/lazyload) 组件使用",
               "value": {
                 "type": "boolean",
-                "kind": "expression"
-              }
-            }
-          ]
-        },
-        {
-          "name": "van-cascader",
-          "slots": [
-            {
-              "name": "title",
-              "description": "自定义顶部标题"
-            },
-            {
-              "name": "option",
-              "description": "自定义选项文字"
-            }
-          ],
-          "events": [
-            {
-              "name": "change",
-              "description": "选中项变化时触发"
-            },
-            {
-              "name": "finish",
-              "description": "全部选项选择完成后触发"
-            },
-            {
-              "name": "close",
-              "description": "点击关闭图标时触发"
-            }
-          ],
-          "attributes": [
-            {
-              "name": "title",
-              "default": "-",
-              "description": "顶部标题",
-              "value": {
-                "type": "string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "value",
-              "default": "-",
-              "description": "选中项的值",
-              "value": {
-                "type": "string | number",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "options",
-              "default": "`[]`",
-              "description": "可选项数据源",
-              "value": {
-                "type": "Option[]",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "placeholder",
-              "default": "`请选择`",
-              "description": "未选中时的提示文案",
-              "value": {
-                "type": "string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "active-color",
-              "default": "`#ee0a24`",
-              "description": "选中状态的高亮颜色",
-              "value": {
-                "type": "string",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "closeable",
-              "default": "`true`",
-              "description": "是否显示关闭图标",
-              "value": {
-                "type": "boolean",
-                "kind": "expression"
-              }
-            },
-            {
-              "name": "field-names",
-              "default": "`{ text: 'text', value: 'value', children: 'children' }`",
-              "description": "自定义 `options` 结构中的字段",
-              "value": {
-                "type": "object",
                 "kind": "expression"
               }
             }
@@ -1829,6 +1737,107 @@
               "description": "描述信息额外类名",
               "value": {
                 "type": "any",
+                "kind": "expression"
+              }
+            }
+          ]
+        },
+        {
+          "name": "van-cascader",
+          "slots": [
+            {
+              "name": "title",
+              "description": "自定义顶部标题"
+            },
+            {
+              "name": "option",
+              "description": "自定义选项文字"
+            }
+          ],
+          "events": [
+            {
+              "name": "change",
+              "description": "选中项变化时触发"
+            },
+            {
+              "name": "finish",
+              "description": "全部选项选择完成后触发"
+            },
+            {
+              "name": "close",
+              "description": "点击关闭图标时触发"
+            }
+          ],
+          "attributes": [
+            {
+              "name": "title",
+              "default": "-",
+              "description": "顶部标题",
+              "value": {
+                "type": "string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "value",
+              "default": "-",
+              "description": "选中项的值",
+              "value": {
+                "type": "string | number",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "options",
+              "default": "`[]`",
+              "description": "可选项数据源",
+              "value": {
+                "type": "Option[]",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "placeholder",
+              "default": "`请选择`",
+              "description": "未选中时的提示文案",
+              "value": {
+                "type": "string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "active-color",
+              "default": "`#ee0a24`",
+              "description": "选中状态的高亮颜色",
+              "value": {
+                "type": "string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "closeable",
+              "default": "`true`",
+              "description": "是否显示关闭图标",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "show-header",
+              "default": "`true`",
+              "description": "是否展示标题栏",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "field-names",
+              "default": "`{ text: 'text', value: 'value', children: 'children' }`",
+              "description": "自定义 `options` 结构中的字段",
+              "value": {
+                "type": "object",
                 "kind": "expression"
               }
             }
@@ -2354,6 +2363,15 @@
               "name": "disabled",
               "default": "`false`",
               "description": "是否禁用面板",
+              "value": {
+                "type": "boolean",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "lazy-render",
+              "default": "`true`",
+              "description": "是否在首次展开时才渲染面板内容",
               "value": {
                 "type": "boolean",
                 "kind": "expression"
@@ -3341,7 +3359,7 @@
             {
               "name": "transition",
               "default": "-",
-              "description": "动画类名，等价于 [transtion](https://cn.vuejs.org/v2/api/index.html#transition) 的 `name` 属性",
+              "description": "动画类名，等价于 [transition](https://cn.vuejs.org/v2/api/index.html#transition) 的 `name` 属性",
               "value": {
                 "type": "string",
                 "kind": "expression"
@@ -4926,9 +4944,18 @@
             {
               "name": "transition",
               "default": "`van-fade`",
-              "description": "动画类名，等价于 [transtion](https://cn.vuejs.org/v2/api/index.html#transition) 的 `name` 属性",
+              "description": "动画类名，等价于 [transition](https://cn.vuejs.org/v2/api/index.html#transition) 的 `name` 属性",
               "value": {
                 "type": "string",
+                "kind": "expression"
+              }
+            },
+            {
+              "name": "overlay-style",
+              "default": "-",
+              "description": "自定义遮罩层样式",
+              "value": {
+                "type": "object",
                 "kind": "expression"
               }
             },
@@ -6386,7 +6413,7 @@
             {
               "name": "transition",
               "default": "-",
-              "description": "动画类名，等价于 [transtion](https://cn.vuejs.org/v2/api/index.html#transition) 的`name`属性",
+              "description": "动画类名，等价于 [transition](https://cn.vuejs.org/v2/api/index.html#transition) 的`name`属性",
               "value": {
                 "type": "string",
                 "kind": "expression"
@@ -7830,6 +7857,14 @@
             {
               "name": "button",
               "description": "自定义滑动按钮"
+            },
+            {
+              "name": "left-button",
+              "description": "自定义左侧滑块按钮（双滑块模式下）"
+            },
+            {
+              "name": "right-button",
+              "description": "自定义右侧滑块按钮（双滑块模式下）"
             }
           ],
           "events": [

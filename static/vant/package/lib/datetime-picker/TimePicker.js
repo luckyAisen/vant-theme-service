@@ -125,6 +125,9 @@ var _default = createComponent({
       this.updateInnerValue();
       this.$nextTick(function () {
         _this2.$nextTick(function () {
+          // https://github.com/youzan/vant/issues/9775
+          _this2.updateInnerValue();
+
           _this2.$emit('change', picker);
         });
       });

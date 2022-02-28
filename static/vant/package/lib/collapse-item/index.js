@@ -31,6 +31,10 @@ var _default = createComponent({
   props: (0, _extends2.default)({}, _shared.cellProps, {
     name: [Number, String],
     disabled: Boolean,
+    lazyRender: {
+      type: Boolean,
+      default: true
+    },
     isLink: {
       type: Boolean,
       default: true
@@ -182,7 +186,7 @@ var _default = createComponent({
     genContent: function genContent() {
       var h = this.$createElement;
 
-      if (this.inited) {
+      if (this.inited || !this.lazyRender) {
         return h("div", {
           "directives": [{
             name: "show",

@@ -15,10 +15,10 @@ export const LOCAL_SOURCE = 'static/vant'
  * @returns {Boolean}
  */
 export async function isExists(path) {
-  logWithSpinner(`check ${path} is exists?`)
+  logWithSpinner(`check ${path} is exists start`)
   const exists = await pathExists(`${path}`)
   if (exists) {
-    successSpinner(`${path} is exists`)
+    successSpinner(`${path} is exists complete`)
   } else {
     failSpinner(`${path} no exists`)
   }
@@ -30,7 +30,7 @@ export async function isExists(path) {
  */
 export async function updateVantSouce() {
   try {
-    logWithSpinner('download vant source')
+    logWithSpinner('download vant source start')
     const browser = await puppeteer.launch({
       // headless: false
     })
@@ -38,7 +38,24 @@ export async function updateVantSouce() {
     await page.goto(VANT_URL, {
       waitUntil: 'networkidle2'
     })
-    const sourceUrl = await page.evaluate(() => {
+    const version = await page.evaluate(async () => {
+      const tag = document
+        .querySelector('.dropdown-menu.dropdown-menu-right')
+        .querySelectorAll('a')
+      let tagList = Array.from(tag)
+      let version = '2.12.44'
+      for (let i = 0; i < tagList.length; i++) {
+        if (tagList[i][0] === '2') {
+          version = tagList[i]
+          break
+        }
+      }
+      return version
+    })
+    await page.goto(`${VANT_URL}?version=${version}`, {
+      waitUntil: 'networkidle2'
+    })
+    const sourceUrl = await page.evaluate(async () => {
       return document
         .querySelector(".package-buttons a[title='Download']")
         .getAttribute('href')
@@ -49,7 +66,7 @@ export async function updateVantSouce() {
     })
     await compressing.tgz.uncompress(res, LOCAL_SOURCE)
     await browser.close()
-    successSpinner('download success')
+    successSpinner('download vant source complete')
   } catch (err) {
     failSpinner('download fail, check your network')
     throw new Error(err)
@@ -61,8 +78,7 @@ export async function updateVantSouce() {
  */
 export async function updateVantIconPath() {
   try {
-    logWithSpinner('update vant icon path')
-
+    logWithSpinner('update vant icon path start')
     const src = 'node_modules/@vant/icons/src'
     const destPrefix = `${LOCAL_SOURCE}/package/lib/icon/`
     const newFileName = 'vant-icons'
@@ -75,9 +91,9 @@ export async function updateVantIconPath() {
       './vant-icons/'
     )
     writeFileSync(targetFile, newLessContent)
-    successSpinner('update success')
+    successSpinner('update vant icon path start complete')
   } catch (err) {
-    successSpinner('update failed')
+    successSpinner('update vant icon path start failed')
     throw new Error(err)
   }
 }

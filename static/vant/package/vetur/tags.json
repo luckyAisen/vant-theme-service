@@ -1,51 +1,4 @@
 {
-  "van-action-sheet": {
-    "attributes": [
-      "v-model (value)",
-      "actions",
-      "title",
-      "cancel-text",
-      "description",
-      "closeable",
-      "close-icon",
-      "duration",
-      "round",
-      "overlay",
-      "lock-scroll",
-      "lazy-render",
-      "close-on-popstate",
-      "close-on-click-action",
-      "close-on-click-overlay",
-      "safe-area-inset-bottom",
-      "get-container"
-    ]
-  },
-  "van-address-edit": {
-    "attributes": [
-      "area-list",
-      "area-columns-placeholder",
-      "area-placeholder",
-      "address-info",
-      "search-result",
-      "show-postal",
-      "show-delete",
-      "show-set-default",
-      "show-search-result",
-      "show-area",
-      "show-detail",
-      "disable-area",
-      "save-button-text",
-      "delete-button-text",
-      "detail-rows",
-      "detail-maxlength",
-      "is-saving",
-      "is-deleting",
-      "tel-validator",
-      "tel-maxlength",
-      "postal-validator",
-      "validator"
-    ]
-  },
   "van-area": {
     "attributes": [
       "value",
@@ -97,15 +50,30 @@
       "replace"
     ]
   },
-  "van-address-list": {
+  "van-address-edit": {
     "attributes": [
-      "v-model",
-      "list",
-      "disabled-list",
-      "disabled-text",
-      "switchable",
-      "add-button-text",
-      "default-tag-text"
+      "area-list",
+      "area-columns-placeholder",
+      "area-placeholder",
+      "address-info",
+      "search-result",
+      "show-postal",
+      "show-delete",
+      "show-set-default",
+      "show-search-result",
+      "show-area",
+      "show-detail",
+      "disable-area",
+      "save-button-text",
+      "delete-button-text",
+      "detail-rows",
+      "detail-maxlength",
+      "is-saving",
+      "is-deleting",
+      "tel-validator",
+      "tel-maxlength",
+      "postal-validator",
+      "validator"
     ]
   },
   "van-calendar": {
@@ -154,6 +122,38 @@
       "range-prompt"
     ]
   },
+  "van-action-sheet": {
+    "attributes": [
+      "v-model (value)",
+      "actions",
+      "title",
+      "cancel-text",
+      "description",
+      "closeable",
+      "close-icon",
+      "duration",
+      "round",
+      "overlay",
+      "lock-scroll",
+      "lazy-render",
+      "close-on-popstate",
+      "close-on-click-action",
+      "close-on-click-overlay",
+      "safe-area-inset-bottom",
+      "get-container"
+    ]
+  },
+  "van-address-list": {
+    "attributes": [
+      "v-model",
+      "list",
+      "disabled-list",
+      "disabled-text",
+      "switchable",
+      "add-button-text",
+      "default-tag-text"
+    ]
+  },
   "van-card": {
     "attributes": [
       "thumb",
@@ -167,17 +167,6 @@
       "currency",
       "thumb-link",
       "lazy-load"
-    ]
-  },
-  "van-cascader": {
-    "attributes": [
-      "title",
-      "value",
-      "options",
-      "placeholder",
-      "active-color",
-      "closeable",
-      "field-names"
     ]
   },
   "van-cell-group": {
@@ -207,6 +196,18 @@
       "title-class",
       "value-class",
       "label-class"
+    ]
+  },
+  "van-cascader": {
+    "attributes": [
+      "title",
+      "value",
+      "options",
+      "placeholder",
+      "active-color",
+      "closeable",
+      "show-header",
+      "field-names"
     ]
   },
   "van-checkbox": {
@@ -281,6 +282,7 @@
       "border",
       "is-link",
       "disabled",
+      "lazy-render",
       "title-class",
       "value-class",
       "label-class"
@@ -606,6 +608,7 @@
       "close-icon",
       "close-icon-position",
       "transition",
+      "overlay-style",
       "get-container"
     ]
   },

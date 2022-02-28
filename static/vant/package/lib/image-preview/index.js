@@ -29,6 +29,7 @@ var defaultConfig = {
   asyncClose: false,
   transition: 'van-fade',
   getContainer: 'body',
+  overlayStyle: null,
   startPosition: 0,
   swipeDuration: 300,
   showIndicators: false,

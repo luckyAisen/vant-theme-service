@@ -114,10 +114,11 @@ export default {
           offsetX = _this$offsetX === void 0 ? 0 : _this$offsetX;
       this.touchStart(event);
       this.touchStartTime = new Date();
+      this.fingerNum = touches.length;
       this.startMoveX = this.moveX;
       this.startMoveY = this.moveY;
-      this.moving = touches.length === 1 && this.scale !== 1;
-      this.zooming = touches.length === 2 && !offsetX;
+      this.moving = this.fingerNum === 1 && this.scale !== 1;
+      this.zooming = this.fingerNum === 2 && !offsetX;
 
       if (this.zooming) {
         this.startScale = this.scale;
@@ -182,13 +183,17 @@ export default {
     checkTap: function checkTap() {
       var _this = this;
 
+      if (this.fingerNum > 1) {
+        return;
+      }
+
       var _this$offsetX2 = this.offsetX,
           offsetX = _this$offsetX2 === void 0 ? 0 : _this$offsetX2,
           _this$offsetY = this.offsetY,
           offsetY = _this$offsetY === void 0 ? 0 : _this$offsetY;
       var deltaTime = new Date() - this.touchStartTime;
       var TAP_TIME = 250;
-      var TAP_OFFSET = 10;
+      var TAP_OFFSET = 5;
 
       if (offsetX < TAP_OFFSET && offsetY < TAP_OFFSET && deltaTime < TAP_TIME) {
         if (this.doubleTapTimer) {

@@ -90,6 +90,14 @@ export default createComponent({
       return this.fileList;
     }
   },
+  created: function created() {
+    this.urls = [];
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.urls.forEach(function (url) {
+      return URL.revokeObjectURL(url);
+    });
+  },
   methods: {
     getDetail: function getDetail(index) {
       if (index === void 0) {
@@ -268,7 +276,13 @@ export default createComponent({
         return isImageFile(item);
       });
       var imageContents = imageFiles.map(function (item) {
-        return item.content || item.url;
+        if (item.file && !item.url) {
+          item.url = URL.createObjectURL(item.file);
+
+          _this5.urls.push(item.url);
+        }
+
+        return item.url;
       });
       this.imagePreview = ImagePreview(_extends({
         images: imageContents,

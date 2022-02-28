@@ -1,160 +1,4 @@
 {
-  "van-action-sheet/v-model (value)": {
-    "type": "boolean",
-    "description": "是否显示动作面板, 默认值: `false`"
-  },
-  "van-action-sheet/actions": {
-    "type": "Action[]",
-    "description": "面板选项列表, 默认值: `[]`"
-  },
-  "van-action-sheet/title": {
-    "type": "string",
-    "description": "顶部标题, 默认值: -"
-  },
-  "van-action-sheet/cancel-text": {
-    "type": "string",
-    "description": "取消按钮文字, 默认值: -"
-  },
-  "van-action-sheet/description": {
-    "type": "string",
-    "description": "选项上方的描述信息, 默认值: -"
-  },
-  "van-action-sheet/closeable": {
-    "type": "boolean",
-    "description": "是否显示关闭图标, 默认值: `true`"
-  },
-  "van-action-sheet/close-icon": {
-    "type": "string",
-    "description": "关闭[图标名称](#/zh-CN/icon)或图片链接, 默认值: `cross`"
-  },
-  "van-action-sheet/duration": {
-    "type": "number | string",
-    "description": "动画时长，单位秒, 默认值: `0.3`"
-  },
-  "van-action-sheet/round": {
-    "type": "boolean",
-    "description": "是否显示圆角, 默认值: `true`"
-  },
-  "van-action-sheet/overlay": {
-    "type": "boolean",
-    "description": "是否显示遮罩层, 默认值: `true`"
-  },
-  "van-action-sheet/lock-scroll": {
-    "type": "boolean",
-    "description": "是否锁定背景滚动, 默认值: `true`"
-  },
-  "van-action-sheet/lazy-render": {
-    "type": "boolean",
-    "description": "是否在显示弹层时才渲染节点, 默认值: `true`"
-  },
-  "van-action-sheet/close-on-popstate": {
-    "type": "boolean",
-    "description": "是否在页面回退时自动关闭, 默认值: `false`"
-  },
-  "van-action-sheet/close-on-click-action": {
-    "type": "boolean",
-    "description": "是否在点击选项后关闭, 默认值: `false`"
-  },
-  "van-action-sheet/close-on-click-overlay": {
-    "type": "boolean",
-    "description": "是否在点击遮罩层后关闭, 默认值: `true`"
-  },
-  "van-action-sheet/safe-area-inset-bottom": {
-    "type": "boolean",
-    "description": "是否开启[底部安全区适配](#/zh-CN/advanced-usage#di-bu-an-quan-qu-gua-pei), 默认值: `true`"
-  },
-  "van-action-sheet/get-container": {
-    "type": "string | () => Element",
-    "description": "指定挂载的节点，[用法示例](#/zh-CN/popup#zhi-ding-gua-zai-wei-zhi), 默认值: -"
-  },
-  "van-address-edit/area-list": {
-    "type": "object",
-    "description": "地区列表, 默认值: -"
-  },
-  "van-address-edit/area-columns-placeholder": {
-    "type": "string[]",
-    "description": "地区选择列占位提示文字, 默认值: `[]`"
-  },
-  "van-address-edit/area-placeholder": {
-    "type": "string",
-    "description": "地区输入框占位提示文字, 默认值: `选择省 / 市 / 区`"
-  },
-  "van-address-edit/address-info": {
-    "type": "AddressInfo",
-    "description": "收货人信息初始值, 默认值: `{}`"
-  },
-  "van-address-edit/search-result": {
-    "type": "SearchResult[]",
-    "description": "详细地址搜索结果, 默认值: `[]`"
-  },
-  "van-address-edit/show-postal": {
-    "type": "boolean",
-    "description": "是否显示邮政编码, 默认值: `false`"
-  },
-  "van-address-edit/show-delete": {
-    "type": "boolean",
-    "description": "是否显示删除按钮, 默认值: `false`"
-  },
-  "van-address-edit/show-set-default": {
-    "type": "boolean",
-    "description": "是否显示默认地址栏, 默认值: `false`"
-  },
-  "van-address-edit/show-search-result": {
-    "type": "boolean",
-    "description": "是否显示搜索结果, 默认值: `false`"
-  },
-  "van-address-edit/show-area": {
-    "type": "boolean",
-    "description": "是否显示地区, 默认值: `true`"
-  },
-  "van-address-edit/show-detail": {
-    "type": "boolean",
-    "description": "是否显示详细地址, 默认值: `true`"
-  },
-  "van-address-edit/disable-area": {
-    "type": "boolean",
-    "description": "是否禁用地区选择, 默认值: `false`"
-  },
-  "van-address-edit/save-button-text": {
-    "type": "string",
-    "description": "保存按钮文字, 默认值: `保存`"
-  },
-  "van-address-edit/delete-button-text": {
-    "type": "string",
-    "description": "删除按钮文字, 默认值: `删除`"
-  },
-  "van-address-edit/detail-rows": {
-    "type": "number | string",
-    "description": "详细地址输入框行数, 默认值: `1`"
-  },
-  "van-address-edit/detail-maxlength": {
-    "type": "number | string",
-    "description": "详细地址最大长度, 默认值: `200`"
-  },
-  "van-address-edit/is-saving": {
-    "type": "boolean",
-    "description": "是否显示保存按钮加载动画, 默认值: `false`"
-  },
-  "van-address-edit/is-deleting": {
-    "type": "boolean",
-    "description": "是否显示删除按钮加载动画, 默认值: `false`"
-  },
-  "van-address-edit/tel-validator": {
-    "type": "string => boolean",
-    "description": "手机号格式校验函数, 默认值: -"
-  },
-  "van-address-edit/tel-maxlength": {
-    "type": "number | string",
-    "description": "手机号最大长度, 默认值: -"
-  },
-  "van-address-edit/postal-validator": {
-    "type": "string => boolean",
-    "description": "邮政编码格式校验函数, 默认值: -"
-  },
-  "van-address-edit/validator": {
-    "type": "(key, val) => string",
-    "description": "自定义校验函数, 默认值: -"
-  },
   "van-area/value": {
     "type": "string",
     "description": "当前选中的省市区`code`, 默认值: -"
@@ -311,33 +155,93 @@
     "type": "boolean",
     "description": "是否在跳转时替换当前页面历史, 默认值: `false`"
   },
-  "van-address-list/v-model": {
+  "van-address-edit/area-list": {
+    "type": "object",
+    "description": "地区列表, 默认值: -"
+  },
+  "van-address-edit/area-columns-placeholder": {
+    "type": "string[]",
+    "description": "地区选择列占位提示文字, 默认值: `[]`"
+  },
+  "van-address-edit/area-placeholder": {
     "type": "string",
-    "description": "当前选中地址的 id, 默认值: -"
+    "description": "地区输入框占位提示文字, 默认值: `选择省 / 市 / 区`"
   },
-  "van-address-list/list": {
-    "type": "Address[]",
-    "description": "地址列表, 默认值: `[]`"
+  "van-address-edit/address-info": {
+    "type": "AddressInfo",
+    "description": "收货人信息初始值, 默认值: `{}`"
   },
-  "van-address-list/disabled-list": {
-    "type": "Address[]",
-    "description": "不可配送地址列表, 默认值: `[]`"
+  "van-address-edit/search-result": {
+    "type": "SearchResult[]",
+    "description": "详细地址搜索结果, 默认值: `[]`"
   },
-  "van-address-list/disabled-text": {
-    "type": "string",
-    "description": "不可配送提示文案, 默认值: -"
-  },
-  "van-address-list/switchable": {
+  "van-address-edit/show-postal": {
     "type": "boolean",
-    "description": "是否允许切换地址, 默认值: `true`"
+    "description": "是否显示邮政编码, 默认值: `false`"
   },
-  "van-address-list/add-button-text": {
-    "type": "string",
-    "description": "底部按钮文字, 默认值: `新增地址`"
+  "van-address-edit/show-delete": {
+    "type": "boolean",
+    "description": "是否显示删除按钮, 默认值: `false`"
   },
-  "van-address-list/default-tag-text": {
+  "van-address-edit/show-set-default": {
+    "type": "boolean",
+    "description": "是否显示默认地址栏, 默认值: `false`"
+  },
+  "van-address-edit/show-search-result": {
+    "type": "boolean",
+    "description": "是否显示搜索结果, 默认值: `false`"
+  },
+  "van-address-edit/show-area": {
+    "type": "boolean",
+    "description": "是否显示地区, 默认值: `true`"
+  },
+  "van-address-edit/show-detail": {
+    "type": "boolean",
+    "description": "是否显示详细地址, 默认值: `true`"
+  },
+  "van-address-edit/disable-area": {
+    "type": "boolean",
+    "description": "是否禁用地区选择, 默认值: `false`"
+  },
+  "van-address-edit/save-button-text": {
     "type": "string",
-    "description": "默认地址标签文字, 默认值: -"
+    "description": "保存按钮文字, 默认值: `保存`"
+  },
+  "van-address-edit/delete-button-text": {
+    "type": "string",
+    "description": "删除按钮文字, 默认值: `删除`"
+  },
+  "van-address-edit/detail-rows": {
+    "type": "number | string",
+    "description": "详细地址输入框行数, 默认值: `1`"
+  },
+  "van-address-edit/detail-maxlength": {
+    "type": "number | string",
+    "description": "详细地址最大长度, 默认值: `200`"
+  },
+  "van-address-edit/is-saving": {
+    "type": "boolean",
+    "description": "是否显示保存按钮加载动画, 默认值: `false`"
+  },
+  "van-address-edit/is-deleting": {
+    "type": "boolean",
+    "description": "是否显示删除按钮加载动画, 默认值: `false`"
+  },
+  "van-address-edit/tel-validator": {
+    "type": "string => boolean",
+    "description": "手机号格式校验函数, 默认值: -"
+  },
+  "van-address-edit/tel-maxlength": {
+    "type": "number | string",
+    "description": "手机号最大长度, 默认值: -"
+  },
+  "van-address-edit/postal-validator": {
+    "type": "string => boolean",
+    "description": "邮政编码格式校验函数, 默认值: -"
+  },
+  "van-address-edit/validator": {
+    "type": "(key, val) => string",
+    "description": "自定义校验函数, 默认值: -"
   },
   "van-calendar/type": {
     "type": "string",
@@ -459,6 +363,102 @@
     "type": "string",
     "description": "选择超过最多可选天数时的提示文案, 默认值: `选择天数不能超过 xx 天`"
   },
+  "van-action-sheet/v-model (value)": {
+    "type": "boolean",
+    "description": "是否显示动作面板, 默认值: `false`"
+  },
+  "van-action-sheet/actions": {
+    "type": "Action[]",
+    "description": "面板选项列表, 默认值: `[]`"
+  },
+  "van-action-sheet/title": {
+    "type": "string",
+    "description": "顶部标题, 默认值: -"
+  },
+  "van-action-sheet/cancel-text": {
+    "type": "string",
+    "description": "取消按钮文字, 默认值: -"
+  },
+  "van-action-sheet/description": {
+    "type": "string",
+    "description": "选项上方的描述信息, 默认值: -"
+  },
+  "van-action-sheet/closeable": {
+    "type": "boolean",
+    "description": "是否显示关闭图标, 默认值: `true`"
+  },
+  "van-action-sheet/close-icon": {
+    "type": "string",
+    "description": "关闭[图标名称](#/zh-CN/icon)或图片链接, 默认值: `cross`"
+  },
+  "van-action-sheet/duration": {
+    "type": "number | string",
+    "description": "动画时长，单位秒, 默认值: `0.3`"
+  },
+  "van-action-sheet/round": {
+    "type": "boolean",
+    "description": "是否显示圆角, 默认值: `true`"
+  },
+  "van-action-sheet/overlay": {
+    "type": "boolean",
+    "description": "是否显示遮罩层, 默认值: `true`"
+  },
+  "van-action-sheet/lock-scroll": {
+    "type": "boolean",
+    "description": "是否锁定背景滚动, 默认值: `true`"
+  },
+  "van-action-sheet/lazy-render": {
+    "type": "boolean",
+    "description": "是否在显示弹层时才渲染节点, 默认值: `true`"
+  },
+  "van-action-sheet/close-on-popstate": {
+    "type": "boolean",
+    "description": "是否在页面回退时自动关闭, 默认值: `false`"
+  },
+  "van-action-sheet/close-on-click-action": {
+    "type": "boolean",
+    "description": "是否在点击选项后关闭, 默认值: `false`"
+  },
+  "van-action-sheet/close-on-click-overlay": {
+    "type": "boolean",
+    "description": "是否在点击遮罩层后关闭, 默认值: `true`"
+  },
+  "van-action-sheet/safe-area-inset-bottom": {
+    "type": "boolean",
+    "description": "是否开启[底部安全区适配](#/zh-CN/advanced-usage#di-bu-an-quan-qu-gua-pei), 默认值: `true`"
+  },
+  "van-action-sheet/get-container": {
+    "type": "string | () => Element",
+    "description": "指定挂载的节点，[用法示例](#/zh-CN/popup#zhi-ding-gua-zai-wei-zhi), 默认值: -"
+  },
+  "van-address-list/v-model": {
+    "type": "string",
+    "description": "当前选中地址的 id, 默认值: -"
+  },
+  "van-address-list/list": {
+    "type": "Address[]",
+    "description": "地址列表, 默认值: `[]`"
+  },
+  "van-address-list/disabled-list": {
+    "type": "Address[]",
+    "description": "不可配送地址列表, 默认值: `[]`"
+  },
+  "van-address-list/disabled-text": {
+    "type": "string",
+    "description": "不可配送提示文案, 默认值: -"
+  },
+  "van-address-list/switchable": {
+    "type": "boolean",
+    "description": "是否允许切换地址, 默认值: `true`"
+  },
+  "van-address-list/add-button-text": {
+    "type": "string",
+    "description": "底部按钮文字, 默认值: `新增地址`"
+  },
+  "van-address-list/default-tag-text": {
+    "type": "string",
+    "description": "默认地址标签文字, 默认值: -"
+  },
   "van-card/thumb": {
     "type": "string",
     "description": "左侧图片 URL, 默认值: -"
@@ -502,34 +502,6 @@
   "van-card/lazy-load": {
     "type": "boolean",
     "description": "是否开启图片懒加载，须配合 [Lazyload](#/zh-CN/lazyload) 组件使用, 默认值: `false`"
-  },
-  "van-cascader/title": {
-    "type": "string",
-    "description": "顶部标题, 默认值: -"
-  },
-  "van-cascader/value": {
-    "type": "string | number",
-    "description": "选中项的值, 默认值: -"
-  },
-  "van-cascader/options": {
-    "type": "Option[]",
-    "description": "可选项数据源, 默认值: `[]`"
-  },
-  "van-cascader/placeholder": {
-    "type": "string",
-    "description": "未选中时的提示文案, 默认值: `请选择`"
-  },
-  "van-cascader/active-color": {
-    "type": "string",
-    "description": "选中状态的高亮颜色, 默认值: `#ee0a24`"
-  },
-  "van-cascader/closeable": {
-    "type": "boolean",
-    "description": "是否显示关闭图标, 默认值: `true`"
-  },
-  "van-cascader/field-names": {
-    "type": "object",
-    "description": "自定义 `options` 结构中的字段, 默认值: `{ text: 'text', value: 'value', children: 'children' }`"
   },
   "van-cell-group/title": {
     "type": "string",
@@ -614,6 +586,38 @@
   "van-cell/label-class": {
     "type": "any",
     "description": "描述信息额外类名, 默认值: -"
+  },
+  "van-cascader/title": {
+    "type": "string",
+    "description": "顶部标题, 默认值: -"
+  },
+  "van-cascader/value": {
+    "type": "string | number",
+    "description": "选中项的值, 默认值: -"
+  },
+  "van-cascader/options": {
+    "type": "Option[]",
+    "description": "可选项数据源, 默认值: `[]`"
+  },
+  "van-cascader/placeholder": {
+    "type": "string",
+    "description": "未选中时的提示文案, 默认值: `请选择`"
+  },
+  "van-cascader/active-color": {
+    "type": "string",
+    "description": "选中状态的高亮颜色, 默认值: `#ee0a24`"
+  },
+  "van-cascader/closeable": {
+    "type": "boolean",
+    "description": "是否显示关闭图标, 默认值: `true`"
+  },
+  "van-cascader/show-header": {
+    "type": "boolean",
+    "description": "是否展示标题栏, 默认值: `true`"
+  },
+  "van-cascader/field-names": {
+    "type": "object",
+    "description": "自定义 `options` 结构中的字段, 默认值: `{ text: 'text', value: 'value', children: 'children' }`"
   },
   "van-checkbox/v-model (value)": {
     "type": "boolean",
@@ -798,6 +802,10 @@
   "van-collapse-item/disabled": {
     "type": "boolean",
     "description": "是否禁用面板, 默认值: `false`"
+  },
+  "van-collapse-item/lazy-render": {
+    "type": "boolean",
+    "description": "是否在首次展开时才渲染面板内容, 默认值: `true`"
   },
   "van-collapse-item/title-class": {
     "type": "string",
@@ -1145,7 +1153,7 @@
   },
   "van-dialog/transition": {
     "type": "string",
-    "description": "动画类名，等价于 [transtion](https://cn.vuejs.org/v2/api/index.html#transition) 的 `name` 属性, 默认值: -"
+    "description": "动画类名，等价于 [transition](https://cn.vuejs.org/v2/api/index.html#transition) 的 `name` 属性, 默认值: -"
   },
   "van-dialog/get-container": {
     "type": "string | () => Element",
@@ -1713,7 +1721,11 @@
   },
   "van-image-preview/transition": {
     "type": "string",
-    "description": "动画类名，等价于 [transtion](https://cn.vuejs.org/v2/api/index.html#transition) 的 `name` 属性, 默认值: `van-fade`"
+    "description": "动画类名，等价于 [transition](https://cn.vuejs.org/v2/api/index.html#transition) 的 `name` 属性, 默认值: `van-fade`"
+  },
+  "van-image-preview/overlay-style": {
+    "type": "object",
+    "description": "自定义遮罩层样式, 默认值: -"
   },
   "van-image-preview/get-container": {
     "type": "string | () => Element",
@@ -2197,7 +2209,7 @@
   },
   "van-popup/transition": {
     "type": "string",
-    "description": "动画类名，等价于 [transtion](https://cn.vuejs.org/v2/api/index.html#transition) 的`name`属性, 默认值: -"
+    "description": "动画类名，等价于 [transition](https://cn.vuejs.org/v2/api/index.html#transition) 的`name`属性, 默认值: -"
   },
   "van-popup/transition-appear": {
     "type": "boolean",

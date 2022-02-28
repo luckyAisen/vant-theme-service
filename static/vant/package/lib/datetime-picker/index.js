@@ -22,7 +22,7 @@ var _default = createComponent({
   methods: {
     // @exposed-api
     getPicker: function getPicker() {
-      return this.$refs.root.getPicker();
+      return this.$refs.root.getProxiedPicker();
     }
   },
   render: function render() {

@@ -1,16 +1,16 @@
 import _mergeJSXProps2 from "@vue/babel-helper-vue-jsx-merge-props";
 import _mergeJSXProps from "@vue/babel-helper-vue-jsx-merge-props";
 import { deepClone } from '../utils/deep-clone';
-import { createNamespace, isObject } from '../utils';
+import { createNamespace, inBrowser, isObject } from '../utils';
 import { range } from '../utils/format/number';
-import { preventDefault } from '../utils/dom/event';
+import { preventDefault, on, off } from '../utils/dom/event';
 import { TouchMixin } from '../mixins/touch';
 var DEFAULT_DURATION = 200; // 惯性滑动思路:
 // 在手指离开屏幕时，如果和上一次 move 时的间隔小于 `MOMENTUM_LIMIT_TIME` 且 move
 // 距离大于 `MOMENTUM_LIMIT_DISTANCE` 时，执行惯性滑动
 
-var MOMENTUM_LIMIT_TIME = 300;
-var MOMENTUM_LIMIT_DISTANCE = 15;
+export var MOMENTUM_LIMIT_TIME = 300;
+export var MOMENTUM_LIMIT_DISTANCE = 15;
 
 var _createNamespace = createNamespace('picker-column'),
     createComponent = _createNamespace[0],
@@ -25,8 +25,12 @@ function getElementTranslateY(element) {
 
 function isOptionDisabled(option) {
   return isObject(option) && option.disabled;
-}
+} // use standard WheelEvent:
+// https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent
 
+
+var supportMousewheel = inBrowser && 'onwheel' in window;
+var mousewheelTimer = null;
 export default createComponent({
   mixins: [TouchMixin],
   props: {
@@ -62,12 +66,20 @@ export default createComponent({
   },
   mounted: function mounted() {
     this.bindTouchEvent(this.$el);
+
+    if (supportMousewheel) {
+      on(this.$el, 'wheel', this.onMouseWheel, false);
+    }
   },
   destroyed: function destroyed() {
     var children = this.$parent.children;
 
     if (children) {
       children.splice(children.indexOf(this), 1);
+    }
+
+    if (supportMousewheel) {
+      off(this.$el, 'wheel');
     }
   },
   watch: {
@@ -156,6 +168,43 @@ export default createComponent({
         _this.moving = false;
       }, 0);
     },
+    onMouseWheel: function onMouseWheel(event) {
+      var _this2 = this;
+
+      if (this.readonly) {
+        return;
+      }
+
+      preventDefault(event, true); // simply combine touchstart and touchmove
+
+      var translateY = getElementTranslateY(this.$refs.wrapper);
+      this.startOffset = Math.min(0, translateY - this.baseOffset);
+      this.momentumOffset = this.startOffset;
+      this.transitionEndTrigger = null; // directly use deltaY, see https://caniuse.com/?search=deltaY
+      // use deltaY to detect direction for not special setting device
+      // https://developer.mozilla.org/en-US/docs/Web/API/Element/wheel_event
+
+      var deltaY = event.deltaY;
+
+      if (this.startOffset === 0 && deltaY < 0) {
+        return;
+      } // get offset
+      // if necessary, can adjust distance value to make scrolling smoother
+
+
+      var distance = -deltaY;
+      this.offset = range(this.startOffset + distance, -(this.count * this.itemHeight), this.itemHeight);
+
+      if (mousewheelTimer) {
+        clearTimeout(mousewheelTimer);
+      }
+
+      mousewheelTimer = setTimeout(function () {
+        _this2.onTouchEnd();
+
+        _this2.touchStartTime = 0;
+      }, MOMENTUM_LIMIT_TIME);
+    },
     onTransitionEnd: function onTransitionEnd() {
       this.stopMomentum();
     },
@@ -187,17 +236,17 @@ export default createComponent({
       return option;
     },
     setIndex: function setIndex(index, emitChange) {
-      var _this2 = this;
+      var _this3 = this;
 
       index = this.adjustIndex(index) || 0;
       var offset = -index * this.itemHeight;
 
       var trigger = function trigger() {
-        if (index !== _this2.currentIndex) {
-          _this2.currentIndex = index;
+        if (index !== _this3.currentIndex) {
+          _this3.currentIndex = index;
 
           if (emitChange) {
-            _this2.$emit('change', index);
+            _this3.$emit('change', index);
           }
         }
       }; // trigger the change event after transitionend when moving
@@ -243,7 +292,7 @@ export default createComponent({
       }
     },
     genOptions: function genOptions() {
-      var _this3 = this;
+      var _this4 = this;
 
       var h = this.$createElement;
       var optionStyle = {
@@ -252,7 +301,7 @@ export default createComponent({
       return this.options.map(function (option, index) {
         var _domProps;
 
-        var text = _this3.getOptionText(option);
+        var text = _this4.getOptionText(option);
 
         var disabled = isOptionDisabled(option);
         var data = {
@@ -263,19 +312,19 @@ export default createComponent({
           },
           class: [bem('item', {
             disabled: disabled,
-            selected: index === _this3.currentIndex
+            selected: index === _this4.currentIndex
           })],
           on: {
             click: function click() {
-              _this3.onClickItem(index);
+              _this4.onClickItem(index);
             }
           }
         };
         var childData = {
           class: 'van-ellipsis',
-          domProps: (_domProps = {}, _domProps[_this3.allowHtml ? 'innerHTML' : 'textContent'] = text, _domProps)
+          domProps: (_domProps = {}, _domProps[_this4.allowHtml ? 'innerHTML' : 'textContent'] = text, _domProps)
         };
-        return h("li", _mergeJSXProps([{}, data]), [_this3.slots('option', option) || h("div", _mergeJSXProps2([{}, childData]))]);
+        return h("li", _mergeJSXProps([{}, data]), [_this4.slots('option', option) || h("div", _mergeJSXProps2([{}, childData]))]);
       });
     }
   },

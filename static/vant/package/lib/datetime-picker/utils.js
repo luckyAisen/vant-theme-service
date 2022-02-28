@@ -8,6 +8,10 @@ exports.getMonthEndDay = getMonthEndDay;
 var _number = require("../utils/validate/number");
 
 function times(n, iteratee) {
+  if (n < 0) {
+    return [];
+  }
+
   var index = -1;
   var result = Array(n);
 

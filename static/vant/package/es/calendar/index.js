@@ -98,6 +98,11 @@ export default createComponent({
       }
     }
   },
+  inject: {
+    vanPopup: {
+      default: null
+    }
+  },
   data: function data() {
     return {
       subtitle: '',
@@ -148,7 +153,11 @@ export default createComponent({
     }
   },
   mounted: function mounted() {
-    this.init();
+    var _this$vanPopup;
+
+    this.init(); // https://github.com/youzan/vant/issues/9845
+
+    (_this$vanPopup = this.vanPopup) == null ? void 0 : _this$vanPopup.$on('opened', this.onScroll);
   },
 
   /* istanbul ignore next */

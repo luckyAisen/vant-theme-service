@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "vant-theme service",
   "license": "MIT",
-  "type": "module",
   "author": {
     "name": "aisen60",
     "email": "caixusheng60@gmail.com"
@@ -23,6 +22,7 @@
     "theme",
     "vant-theme"
   ],
+  "type": "module",
   "scripts": {
     "prepare": "husky install",
     "lint": "eslint api --fix --ext .ts,.tsx ",
@@ -34,12 +34,15 @@
     "clean-css": "^5.2.2",
     "fs-extra": "^10.0.0",
     "less": "^4.1.1",
-    "postcss": "^8.3.11"
+    "postcss": "^7.0.31",
+    "postcss-loader": "^3.0.0",
+    "autoprefixer": "^9.8.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^13.1.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@types/node": "^16.9.1",
+    "@types/postcss-load-config": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
     "@vant/icons": "^1.7.1",

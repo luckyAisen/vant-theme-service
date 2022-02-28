@@ -3,7 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports.default = void 0;
+exports.default = exports.MOMENTUM_LIMIT_DISTANCE = exports.MOMENTUM_LIMIT_TIME = void 0;
 
 var _babelHelperVueJsxMergeProps = _interopRequireDefault(require("@vue/babel-helper-vue-jsx-merge-props"));
 
@@ -22,7 +22,9 @@ var DEFAULT_DURATION = 200; // 惯性滑动思路:
 // 距离大于 `MOMENTUM_LIMIT_DISTANCE` 时，执行惯性滑动
 
 var MOMENTUM_LIMIT_TIME = 300;
+exports.MOMENTUM_LIMIT_TIME = MOMENTUM_LIMIT_TIME;
 var MOMENTUM_LIMIT_DISTANCE = 15;
+exports.MOMENTUM_LIMIT_DISTANCE = MOMENTUM_LIMIT_DISTANCE;
 
 var _createNamespace = (0, _utils.createNamespace)('picker-column'),
     createComponent = _createNamespace[0],
@@ -37,7 +39,12 @@ function getElementTranslateY(element) {
 
 function isOptionDisabled(option) {
   return (0, _utils.isObject)(option) && option.disabled;
-}
+} // use standard WheelEvent:
+// https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent
+
+
+var supportMousewheel = _utils.inBrowser && 'onwheel' in window;
+var mousewheelTimer = null;
 
 var _default2 = createComponent({
   mixins: [_touch.TouchMixin],
@@ -74,12 +81,20 @@ var _default2 = createComponent({
   },
   mounted: function mounted() {
     this.bindTouchEvent(this.$el);
+
+    if (supportMousewheel) {
+      (0, _event.on)(this.$el, 'wheel', this.onMouseWheel, false);
+    }
   },
   destroyed: function destroyed() {
     var children = this.$parent.children;
 
     if (children) {
       children.splice(children.indexOf(this), 1);
+    }
+
+    if (supportMousewheel) {
+      (0, _event.off)(this.$el, 'wheel');
     }
   },
   watch: {
@@ -168,6 +183,43 @@ var _default2 = createComponent({
         _this.moving = false;
       }, 0);
     },
+    onMouseWheel: function onMouseWheel(event) {
+      var _this2 = this;
+
+      if (this.readonly) {
+        return;
+      }
+
+      (0, _event.preventDefault)(event, true); // simply combine touchstart and touchmove
+
+      var translateY = getElementTranslateY(this.$refs.wrapper);
+      this.startOffset = Math.min(0, translateY - this.baseOffset);
+      this.momentumOffset = this.startOffset;
+      this.transitionEndTrigger = null; // directly use deltaY, see https://caniuse.com/?search=deltaY
+      // use deltaY to detect direction for not special setting device
+      // https://developer.mozilla.org/en-US/docs/Web/API/Element/wheel_event
+
+      var deltaY = event.deltaY;
+
+      if (this.startOffset === 0 && deltaY < 0) {
+        return;
+      } // get offset
+      // if necessary, can adjust distance value to make scrolling smoother
+
+
+      var distance = -deltaY;
+      this.offset = (0, _number.range)(this.startOffset + distance, -(this.count * this.itemHeight), this.itemHeight);
+
+      if (mousewheelTimer) {
+        clearTimeout(mousewheelTimer);
+      }
+
+      mousewheelTimer = setTimeout(function () {
+        _this2.onTouchEnd();
+
+        _this2.touchStartTime = 0;
+      }, MOMENTUM_LIMIT_TIME);
+    },
     onTransitionEnd: function onTransitionEnd() {
       this.stopMomentum();
     },
@@ -199,17 +251,17 @@ var _default2 = createComponent({
       return option;
     },
     setIndex: function setIndex(index, emitChange) {
-      var _this2 = this;
+      var _this3 = this;
 
       index = this.adjustIndex(index) || 0;
       var offset = -index * this.itemHeight;
 
       var trigger = function trigger() {
-        if (index !== _this2.currentIndex) {
-          _this2.currentIndex = index;
+        if (index !== _this3.currentIndex) {
+          _this3.currentIndex = index;
 
           if (emitChange) {
-            _this2.$emit('change', index);
+            _this3.$emit('change', index);
           }
         }
       }; // trigger the change event after transitionend when moving
@@ -255,7 +307,7 @@ var _default2 = createComponent({
       }
     },
     genOptions: function genOptions() {
-      var _this3 = this;
+      var _this4 = this;
 
       var h = this.$createElement;
       var optionStyle = {
@@ -264,7 +316,7 @@ var _default2 = createComponent({
       return this.options.map(function (option, index) {
         var _domProps;
 
-        var text = _this3.getOptionText(option);
+        var text = _this4.getOptionText(option);
 
         var disabled = isOptionDisabled(option);
         var data = {
@@ -275,19 +327,19 @@ var _default2 = createComponent({
           },
           class: [bem('item', {
             disabled: disabled,
-            selected: index === _this3.currentIndex
+            selected: index === _this4.currentIndex
           })],
           on: {
             click: function click() {
-              _this3.onClickItem(index);
+              _this4.onClickItem(index);
             }
           }
         };
         var childData = {
           class: 'van-ellipsis',
-          domProps: (_domProps = {}, _domProps[_this3.allowHtml ? 'innerHTML' : 'textContent'] = text, _domProps)
+          domProps: (_domProps = {}, _domProps[_this4.allowHtml ? 'innerHTML' : 'textContent'] = text, _domProps)
         };
-        return h("li", (0, _babelHelperVueJsxMergeProps.default)([{}, data]), [_this3.slots('option', option) || h("div", (0, _babelHelperVueJsxMergeProps.default)([{}, childData]))]);
+        return h("li", (0, _babelHelperVueJsxMergeProps.default)([{}, data]), [_this4.slots('option', option) || h("div", (0, _babelHelperVueJsxMergeProps.default)([{}, childData]))]);
       });
     }
   },

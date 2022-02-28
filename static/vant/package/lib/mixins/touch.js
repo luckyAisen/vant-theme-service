@@ -5,14 +5,12 @@ exports.TouchMixin = void 0;
 
 var _event = require("../utils/dom/event");
 
-var MIN_DISTANCE = 10;
-
 function getDirection(x, y) {
-  if (x > y && x > MIN_DISTANCE) {
+  if (x > y) {
     return 'horizontal';
   }
 
-  if (y > x && y > MIN_DISTANCE) {
+  if (y > x) {
     return 'vertical';
   }
 
@@ -32,13 +30,18 @@ var TouchMixin = {
       this.startY = event.touches[0].clientY;
     },
     touchMove: function touchMove(event) {
-      var touch = event.touches[0]; // Fix: Safari back will set clientX to negative number
+      var touch = event.touches[0]; // safari back will set clientX to negative number
 
       this.deltaX = touch.clientX < 0 ? 0 : touch.clientX - this.startX;
       this.deltaY = touch.clientY - this.startY;
       this.offsetX = Math.abs(this.deltaX);
-      this.offsetY = Math.abs(this.deltaY);
-      this.direction = this.direction || getDirection(this.offsetX, this.offsetY);
+      this.offsetY = Math.abs(this.deltaY); // lock direction when distance is greater than a certain value
+
+      var LOCK_DIRECTION_DISTANCE = 10;
+
+      if (!this.direction || this.offsetX < LOCK_DIRECTION_DISTANCE && this.offsetY < LOCK_DIRECTION_DISTANCE) {
+        this.direction = getDirection(this.offsetX, this.offsetY);
+      }
     },
     resetTouchStatus: function resetTouchStatus() {
       this.direction = '';

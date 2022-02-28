@@ -77,9 +77,31 @@ export var TimePickerMixin = {
     });
   },
   methods: {
-    // @exposed-api
     getPicker: function getPicker() {
       return this.$refs.picker;
+    },
+    // https://github.com/youzan/vant/issues/10013
+    getProxiedPicker: function getProxiedPicker() {
+      var _this4 = this;
+
+      var picker = this.$refs.picker;
+
+      if (picker) {
+        var proxy = function proxy(fn) {
+          return function () {
+            picker[fn].apply(picker, arguments);
+
+            _this4.updateInnerValue();
+          };
+        };
+
+        return _extends({}, picker, {
+          setValues: proxy('setValues'),
+          setIndexes: proxy('setIndexes'),
+          setColumnIndex: proxy('setColumnIndex'),
+          setColumnValue: proxy('setColumnValue')
+        });
+      }
     },
     onConfirm: function onConfirm() {
       this.$emit('input', this.innerValue);
@@ -90,12 +112,12 @@ export var TimePickerMixin = {
     }
   },
   render: function render() {
-    var _this4 = this;
+    var _this5 = this;
 
     var h = arguments[0];
     var props = {};
     Object.keys(pickerProps).forEach(function (key) {
-      props[key] = _this4[key];
+      props[key] = _this5[key];
     });
     return h(Picker, {
       "ref": "picker",

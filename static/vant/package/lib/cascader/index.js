@@ -34,6 +34,10 @@ var _default2 = createComponent({
     closeable: {
       type: Boolean,
       default: true
+    },
+    showHeader: {
+      type: Boolean,
+      default: true
     }
   },
   data: function data() {
@@ -194,19 +198,22 @@ var _default2 = createComponent({
     },
     renderHeader: function renderHeader() {
       var h = this.$createElement;
-      return h("div", {
-        "class": bem('header')
-      }, [h("h2", {
-        "class": bem('title')
-      }, [this.slots('title') || this.title]), this.closeable ? h(_icon.default, {
-        "attrs": {
-          "name": "cross"
-        },
-        "class": bem('close-icon'),
-        "on": {
-          "click": this.onClose
-        }
-      }) : null]);
+
+      if (this.showHeader) {
+        return h("div", {
+          "class": bem('header')
+        }, [h("h2", {
+          "class": bem('title')
+        }, [this.slots('title') || this.title]), this.closeable ? h(_icon.default, {
+          "attrs": {
+            "name": "cross"
+          },
+          "class": bem('close-icon'),
+          "on": {
+            "click": this.onClose
+          }
+        }) : null]);
+      }
     },
     renderOptions: function renderOptions(options, selectedOption, tabIndex) {
       var _this4 = this;
