@@ -32,6 +32,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Husky prepare
+        run: npm run prepare
+
       - name: Update vant source
         run: npm run action
 
@@ -45,5 +48,5 @@ jobs:
           # see: https://stackoverflow.com/questions/8123674/how-to-git-commit-nothing-without-an-error
           git add -A
           git diff-index --quiet HEAD || git commit -m 'ci(github actions): update source'
-          git push origin main
+          git push origin main --force
 
