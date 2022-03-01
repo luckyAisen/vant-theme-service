@@ -8,25 +8,23 @@
 
 ### 如何使用
 
-```json
-{
-  "url": {
-    "raw": "https://vant-theme-service.vercel.app/update-theme",
-    "protocol": "https",
-    "host": ["vant-theme-service", "vercel", "app"],
-    "path": ["update-theme"]
-  },
-  "method": "POST",
-  "header": [],
-  "body": {
-    "mode": "raw",
-    // "raw": "{\n    \"@red\": \"#ee0a24\"\n}",
-    "raw": "{}",
-    "options": {
-      "raw": {
-        "language": "json"
-      }
-    }
+```js
+var data = JSON.stringify({
+  '@red': '#35e483',
+  '@button-primary-background-color': '#35e483'
+})
+
+var xhr = new XMLHttpRequest()
+xhr.withCredentials = true
+
+xhr.addEventListener('readystatechange', function () {
+  if (this.readyState === 4) {
+    console.log(this.responseText)
   }
-}
+})
+
+xhr.open('POST', 'https://vant-theme-service.vercel.app/api/update-theme')
+xhr.setRequestHeader('Content-Type', 'application/json')
+
+xhr.send(data)
 ```
