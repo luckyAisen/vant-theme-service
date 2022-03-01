@@ -1,6 +1,6 @@
 import { spawn } from 'child_process'
-import { readFileSync, writeFileSync } from 'fs'
-import { pathExists, copy, remove } from 'fs-extra'
+import { resolve } from 'path'
+import fs from 'fs-extra'
 import puppeteer from 'puppeteer'
 import urllib from 'urllib'
 import compressing from 'compressing'
@@ -16,7 +16,7 @@ export const LOCAL_SOURCE = 'static/vant'
  */
 export async function isExists(path) {
   logWithSpinner(`check ${path} is exists start`)
-  const exists = await pathExists(`${path}`)
+  const exists = await fs.pathExists(`${path}`)
   if (exists) {
     successSpinner(`${path} is exists complete`)
   } else {
@@ -83,19 +83,41 @@ export async function updateVantIconPath() {
     const destPrefix = `${LOCAL_SOURCE}/package/lib/icon/`
     const newFileName = 'vant-icons'
     const dest = `${destPrefix}${newFileName}`
-    await copy(src, dest)
+    await fs.copy(src, dest)
     const targetFile = `${destPrefix}/index.less`
-    const lessContent = readFileSync(targetFile, 'UTF-8')
+    const lessContent = fs.readFileSync(targetFile, 'UTF-8')
     const newLessContent = lessContent.replace(
       new RegExp('~@vant/icons/src/', 'g'),
       './vant-icons/'
     )
-    writeFileSync(targetFile, newLessContent)
+    await fs.outputFile(targetFile, newLessContent)
     successSpinner('update vant icon path start complete')
   } catch (err) {
     successSpinner('update vant icon path start failed')
     throw new Error(err)
   }
+}
+
+/**
+ * 注释 icon 路径
+ */
+export async function replaceIndexIcon() {
+  logWithSpinner(`replace index.less icon start`)
+  const targetFile = resolve(
+    process.env.PWD,
+    'static/vant/package/lib/index.less'
+  )
+  fs.readFile(targetFile, (err, buffer) => {
+    if (err) console.error(err)
+    const newContent = buffer
+      .toString()
+      .replace(
+        new RegExp('@import "./icon/index.less"', 'g'),
+        '// @import "./icon/index.less";'
+      )
+    fs.outputFile(targetFile, newContent)
+  })
+  successSpinner(`replace index.less icon completed`)
 }
 
 export function runServe() {
@@ -107,5 +129,5 @@ export function runBuild() {
 }
 
 export async function runClean() {
-  return remove(LOCAL_SOURCE)
+  return fs.remove(LOCAL_SOURCE)
 }

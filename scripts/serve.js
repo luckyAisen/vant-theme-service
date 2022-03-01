@@ -3,6 +3,7 @@ import {
   isExists,
   updateVantSouce,
   updateVantIconPath,
+  replaceIndexIcon,
   runServe
 } from './utils.js'
 
@@ -10,7 +11,7 @@ async function serve() {
   try {
     if (!(await isExists(LOCAL_SOURCE))) {
       await updateVantSouce()
-      await updateVantIconPath()
+      await replaceIndexIcon()
     }
     runServe()
   } catch (err) {
