@@ -1,9 +1,9 @@
-import { updateVantSouce, updateVantIconPath, runBuild } from './utils.js'
+import { updateVantSouce, replaceIndexIcon, runBuild } from './utils.js'
 
 async function build() {
   try {
     await updateVantSouce()
-    await updateVantIconPath()
+    await replaceIndexIcon()
     runBuild()
   } catch (err) {
     console.log(err)

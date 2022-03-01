@@ -2,7 +2,6 @@ import {
   LOCAL_SOURCE,
   isExists,
   updateVantSouce,
-  updateVantIconPath,
   replaceIndexIcon,
   runServe
 } from './utils.js'

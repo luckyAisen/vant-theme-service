@@ -47,8 +47,9 @@ jobs:
 
       - name: Commit changes
         run: |
-          # see: https://stackoverflow.com/questions/8123674/how-to-git-commit-nothing-without-an-error
-          git add .
-          git commit -m 'ci(github actions): update source'
-          git push origin main
+          if [ -n "$(git status -s)" ];then
+            git add .
+            git commit -m "ci(github actions): update vant source"
+            git push -f
+          fi
 
