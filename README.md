@@ -9,23 +9,23 @@
 ### 如何使用
 
 ```js
-var myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
+var myHeaders = new Headers()
+myHeaders.append('Content-Type', 'application/json')
 
 var raw = JSON.stringify({
-  "@red": "#35e483",
-  "@button-primary-background-color": "#35e483"
-});
+  '@red': '#35e483',
+  '@button-primary-background-color': '#35e483'
+})
 
 var requestOptions = {
   method: 'POST',
   headers: myHeaders,
   body: raw,
   redirect: 'follow'
-};
+}
 
-fetch("http://127.0.0.1:3000/api/update-theme", requestOptions)
+fetch('https://vant-theme-service.vercel.app/api/update-theme', requestOptions)
   .then(response => response.text())
   .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+  .catch(error => console.log('error', error))
 ```
